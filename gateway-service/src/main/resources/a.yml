@@ -1,0 +1,9 @@
+spring:
+  cloud:
+    gateway:
+      routes:
+        # Première route
+        - id: r1
+          uri: lb://USER-SERVICE
+          predicates:
+            - Path=/api/users/**
