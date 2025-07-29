@@ -1,4 +1,13 @@
 package com.project.academic_service.dto;
 
-public record AcademicDTO() {
+import com.project.academic_service.enumeration.AcademicYearStatus;
+
+import java.time.LocalDate;
+
+public record AcademicDTO(
+         String label,
+         LocalDate startDate,
+         LocalDate endDate,
+         AcademicYearStatus status
+) {
 }

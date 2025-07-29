@@ -1,0 +1,32 @@
+GET http://localhost:8085/api/academic-year
+
+###
+GET http://localhost:8085/api/academic-year/3
+
+###
+POST http://localhost:8085/api/academic-year
+Content-Type: application/json
+
+{
+    "label":"2026 - 2027",
+    "startDate": "2026-10-04",
+    "endDate": "2027-06-09",
+    "status": "NOT_SET"
+}
+
+###
+PUT http://localhost:8085/api/academic-year/2
+Content-Type: application/json
+
+{
+    "label":"2025 - 2026",
+    "startDate": "2025-07-28",
+    "endDate": "2026-08-13",
+    "status": "EN_COURS"
+}
+
+
+###
+DELETE http://localhost:8085/api/academic-year/1
+
+
