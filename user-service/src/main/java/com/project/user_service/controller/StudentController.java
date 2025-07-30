@@ -1,7 +1,8 @@
-package com.project.ensitech.controller.student;
+package com.project.user_service.controller;
 
-import com.project.ensitech.model.dto.StudentDto;
-import com.project.ensitech.service.common.IStudentService;
+
+import com.project.user_service.models.dto.StudentDto;
+import com.project.user_service.service.common.IStudentService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -38,7 +39,7 @@ public class StudentController {
         return ResponseEntity.ok(studentService.updateStudent(id, studentDto));
     }
 
-    @PutMapping("/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteStudent(@PathVariable Long id) {
 
         studentService.deleteStudent(id);
