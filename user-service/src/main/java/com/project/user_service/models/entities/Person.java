@@ -22,10 +22,10 @@ public abstract class Person implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY) // IDENTITY est souvent mieux pour MySQL, il laisse la BDD gérer l'auto-incrément.
     private Long id; // Utiliser Long pour les IDs est une bonne pratique, pour éviter les dépassements.
 
-    @Column(nullable = false)
+    @Column(name = "first_name", nullable = false)
     private String firstName;
 
-    @Column(nullable = false)
+    @Column(name = "last_name", nullable = false)
     private String lastName;
 
     @Column(unique = true, nullable = false) // Un email doit être unique et non nul

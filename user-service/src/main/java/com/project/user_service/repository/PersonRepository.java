@@ -1,13 +1,11 @@
 package com.project.user_service.repository;
 
-import com.project.user_service.models.entities.Person;
-import com.project.user_service.models.entities.Student;
-import com.project.user_service.models.entities.Teacher;
+import com.project.user_service.models.entities.*;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import java.util.Collection;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -30,9 +28,34 @@ public interface PersonRepository extends JpaRepository <Person, Long>{
     @Query("SELECT t FROM Teacher t")
     List<Teacher> findAllTeachers();
 
-    // De même pour les étudiants.
+
+    // Pour les Étudiants
     @Query("SELECT s FROM Student s")
     List<Student> findAllStudents();
+
+    @Query("SELECT s FROM Student s WHERE s.id = :id")
+    Optional<Student> findStudentById(Long id);
+
+    // Pour les StudyManagers
+    @Query("SELECT sm FROM StudyManager sm")
+    List<StudyManager> findAllStudyManagers();
+
+    @Query("SELECT sm FROM StudyManager sm WHERE sm.id = :id")
+    Optional<StudyManager> findStudyManagerById(Long id);
+
+    // Pour les Directors
+    @Query("SELECT d FROM Director d")
+    List<Director> findAllDirectors();
+
+    @Query("SELECT d FROM Director d WHERE d.id = :id")
+    Optional<Director> findDirectorById(Long id);
+
+    // Pour les Administrators
+    @Query("SELECT a FROM Administrator a")
+    List<Administrator> findAllAdministrators();
+
+    @Query("SELECT a FROM Administrator a WHERE a.id = :id")
+    Optional<Administrator> findAdministratorById(Long id);
 
 
 
