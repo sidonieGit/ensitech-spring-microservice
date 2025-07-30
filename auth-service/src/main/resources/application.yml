@@ -1,0 +1,17 @@
+server:
+  port: 8081
+
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/auth_ensitech_db?useSSL=false&serverTimezone=UTC&createDatabaseIfNotExist=true
+    username: root
+    password: Db_P@ssw0rd
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+jwt:
+  #secret: v1234567890abcdef1234567890abcdef
+  secret: 9RrADYOngdWHKXeONg6jTQptkJ3CFy5z+F49VGUkZN4=
+  expiration: 86400000  #1
