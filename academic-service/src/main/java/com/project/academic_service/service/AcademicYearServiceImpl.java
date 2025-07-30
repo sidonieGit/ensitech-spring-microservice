@@ -3,7 +3,7 @@ package com.project.academic_service.service;
 import com.project.academic_service.dao.repository.AcademicYearRepository;
 import com.project.academic_service.domain.AcademicYear;
 import com.project.academic_service.dto.AcademicDTO;
-import com.project.academic_service.exception.AcademicYearAlreadyExistsException;
+import com.project.academic_service.exception.ObjectAlreadyExistsException;
 import com.project.academic_service.mapper.AcademicDTOMapper;
 import com.project.academic_service.mapper.AcademicEntityMapper;
 import com.project.academic_service.mapper.AcademicYearUpdateMapper;
@@ -47,7 +47,7 @@ public class AcademicYearServiceImpl implements IAcademicYearService{
     @Override
     public AcademicYear addAcademicYear(AcademicDTO academicDTO) {
         if(this.academicYearRepository.existsByLabel(academicDTO.label()))
-            throw new AcademicYearAlreadyExistsException("Already exists!");
+            throw new ObjectAlreadyExistsException("Already exists!");
 
         AcademicYear entity = academicEntityMapper.apply(academicDTO);
         return this.academicYearRepository.save(entity);
@@ -58,7 +58,7 @@ public class AcademicYearServiceImpl implements IAcademicYearService{
     public AcademicYear create(AcademicYear academicYear) {
         Optional<AcademicYear> existingYear= this.academicYearRepository.findById(academicYear.getId());
         if(existingYear.isPresent()){
-            throw new AcademicYearAlreadyExistsException("This academic Already exists!");
+            throw new ObjectAlreadyExistsException("This academic Already exists!");
         }
         academicYear.setCreatedAt(LocalDateTime.now());
         academicYear.setUpdatedAt(LocalDateTime.now());
