@@ -47,7 +47,7 @@ public class AcademicYearController {
         return ResponseEntity.ok(put);
     }
 
-    @DeleteMapping("{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable int id){
         this.academicYearService.delete(id);
 

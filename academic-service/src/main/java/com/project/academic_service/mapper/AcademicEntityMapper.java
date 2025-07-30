@@ -2,12 +2,13 @@ package com.project.academic_service.mapper;
 
 import com.project.academic_service.domain.AcademicYear;
 import com.project.academic_service.dto.AcademicDTO;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.function.Function;
 
-@Service
+@Component
 public class AcademicEntityMapper implements Function<AcademicDTO, AcademicYear> {
 
     @Override

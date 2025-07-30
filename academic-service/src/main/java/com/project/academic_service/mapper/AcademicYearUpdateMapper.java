@@ -2,12 +2,13 @@ package com.project.academic_service.mapper;
 
 import com.project.academic_service.domain.AcademicYear;
 import com.project.academic_service.dto.AcademicDTO;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.function.BiFunction;
 
-@Service
+@Component
 public class AcademicYearUpdateMapper implements BiFunction<AcademicDTO, AcademicYear, AcademicYear> {
     @Override
     public AcademicYear apply(AcademicDTO academicDTO, AcademicYear academicYear) {
