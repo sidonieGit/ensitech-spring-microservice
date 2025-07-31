@@ -1,4 +1,4 @@
-package sido.coop.config_service;
+package com.project.config_service;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
