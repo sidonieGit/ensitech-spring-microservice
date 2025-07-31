@@ -68,6 +68,8 @@
             <optional>true</optional>
         </dependency>
 
+
+
         <!-- MapStruct pour le mapping DTO <-> Entité -->
         <dependency>
             <groupId>org.mapstruct</groupId>

@@ -23,7 +23,7 @@ public class TeacherServiceImpl implements ITeacherService {
     private static final Logger log = LogManager.getLogger(TeacherServiceImpl.class);
 
     private final PersonRepository personRepository;
-    private final TeacherMapper teacherMapper; // <-- INJECTER LE MAPPER
+    private final TeacherMapper teacherMapper; //
 
     public TeacherServiceImpl(PersonRepository personRepository, TeacherMapper teacherMapper) {
         this.personRepository = personRepository;
