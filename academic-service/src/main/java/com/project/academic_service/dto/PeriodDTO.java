@@ -8,6 +8,8 @@ public record PeriodDTO(
         String entitled,
         TypePeriod typePeriod,
         LocalDate startedAt,
-        LocalDate endedAt
+        LocalDate endedAt,
+        Integer academicYearId
 ) {
+
 }

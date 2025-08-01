@@ -24,7 +24,7 @@ public class PeriodController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<PeriodDTO> getPeriod(@PathVariable int id){
+    public ResponseEntity<PeriodDTO> getPeriod(@PathVariable Integer id){
         return ResponseEntity.ok(this.periodService.get(id));
     }
 
@@ -34,14 +34,14 @@ public class PeriodController {
         return ResponseEntity.ok(post);
     }
     @PutMapping("/{id}")
-    public ResponseEntity<PeriodDTO> update(@PathVariable int id, @RequestBody PeriodDTO periodDTO){
+    public ResponseEntity<PeriodDTO> update(@PathVariable Integer id, @RequestBody PeriodDTO periodDTO){
         PeriodDTO put = this.periodService.update(id,periodDTO);
         return ResponseEntity.ok(put);
 
     }
 
-    @DeleteMapping("{id}")
-    public ResponseEntity<Void> delete(int id){
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Integer id){
         this.periodService.delete(id);
         return ResponseEntity.noContent().build();
     }

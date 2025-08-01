@@ -15,7 +15,8 @@ public class PeriodDTOMapper implements Function<Period, PeriodDTO> {
                 period.getEntitled(),
                 period.getTypePeriod(),
                 period.getStartedAt(),
-                period.getEndedAt()
+                period.getEndedAt(),
+                period.getAcademicYear().getId()
         );
     }
 }

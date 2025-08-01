@@ -31,7 +31,7 @@ public class AcademicYearController {
     }
 
     @GetMapping("/{id}")
-    public AcademicDTO get(@PathVariable("id") int id){
+    public AcademicDTO get(@PathVariable("id") Integer id){
         return this.academicYearService.get(id);
     }
 
@@ -42,13 +42,13 @@ public class AcademicYearController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<AcademicDTO> update(@PathVariable int id, @RequestBody AcademicDTO academicDTO){
+    public ResponseEntity<AcademicDTO> update(@PathVariable Integer id, @RequestBody AcademicDTO academicDTO){
         AcademicDTO put = academicYearService.updateAcademicYear(id, academicDTO);
         return ResponseEntity.ok(put);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable int id){
+    public ResponseEntity<Void> delete(@PathVariable Integer id){
         this.academicYearService.delete(id);
 
         return ResponseEntity.noContent().build();
