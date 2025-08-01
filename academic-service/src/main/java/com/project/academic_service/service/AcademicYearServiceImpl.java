@@ -1,13 +1,17 @@
 package com.project.academic_service.service;
 
 import com.project.academic_service.dao.repository.AcademicYearRepository;
+import com.project.academic_service.dao.repository.PeriodRepository;
 import com.project.academic_service.domain.AcademicYear;
+import com.project.academic_service.domain.Period;
 import com.project.academic_service.dto.AcademicDTO;
 import com.project.academic_service.exception.ObjectAlreadyExistsException;
 import com.project.academic_service.mapper.AcademicDTOMapper;
 import com.project.academic_service.mapper.AcademicEntityMapper;
 import com.project.academic_service.mapper.AcademicYearUpdateMapper;
+import com.project.academic_service.mapper.PeriodEntityMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -21,24 +25,28 @@ public class AcademicYearServiceImpl implements IAcademicYearService{
     private final AcademicDTOMapper academicDTOMapper;
     private final AcademicEntityMapper academicEntityMapper;
     private final AcademicYearUpdateMapper academicYearUpdateMapper;
+    private final PeriodEntityMapper periodEntityMapper;
 
-    public AcademicYearServiceImpl(AcademicYearRepository academicYearRepository, AcademicDTOMapper academicDTOMapper, AcademicEntityMapper academicEntityMapper, AcademicYearUpdateMapper academicYearUpdateMapper) {
+    public AcademicYearServiceImpl(AcademicYearRepository academicYearRepository, AcademicDTOMapper academicDTOMapper, AcademicEntityMapper academicEntityMapper, AcademicYearUpdateMapper academicYearUpdateMapper, PeriodEntityMapper periodEntityMapper) {
         this.academicYearRepository = academicYearRepository;
         this.academicDTOMapper = academicDTOMapper;
         this.academicEntityMapper = academicEntityMapper;
         this.academicYearUpdateMapper = academicYearUpdateMapper;
+        this.periodEntityMapper = periodEntityMapper;
     }
 
     @Override
+    @Transactional(readOnly = true)
     public AcademicDTO get(int id) {
-        return this.academicYearRepository.findById(id)
+        return this.academicYearRepository.findByIdWithPeriods(id)
                 .map(academicDTOMapper)
                 .orElseThrow(()-> new NoSuchElementException("There nothing about"+ id));
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<AcademicDTO> getYears() {
-        return this.academicYearRepository.findAll()
+        return this.academicYearRepository.findAllWithPeriods()
                 .stream()
                 .map(academicDTOMapper)
                 .collect(Collectors.toList());
@@ -81,14 +89,24 @@ public class AcademicYearServiceImpl implements IAcademicYearService{
         return academicYearRepository.save(existingYear);
     }
 
+    @Transactional
     @Override
     public AcademicDTO updateAcademicYear(int id, AcademicDTO academicDTO) {
-        AcademicYear existingYear = this.academicYearRepository.findById(id)
+        AcademicYear existingYear = this.academicYearRepository.findByIdWithPeriods(id)
                 .orElseThrow(()-> new NoSuchElementException("Academic year not found with "+ id));
 
-        AcademicYear updated = academicYearUpdateMapper.apply(academicDTO, existingYear);
 
-        AcademicYear saved = academicYearRepository.save(updated);
+    academicYearUpdateMapper.apply(academicDTO, existingYear);
+        if(academicDTO.periods() != null){
+            existingYear.getPeriods().clear();
+
+            academicDTO.periods().forEach(periodDTO -> {
+                Period period = periodEntityMapper.apply(periodDTO);
+                period.setAcademicYear(existingYear); // relation inverse obligatoire
+                existingYear.getPeriods().add(period);
+            });
+        }
+        AcademicYear saved = academicYearRepository.save(existingYear);
         return academicDTOMapper.apply(saved);
 
     }
@@ -98,4 +116,7 @@ public class AcademicYearServiceImpl implements IAcademicYearService{
     public void delete(int id) {
         this.academicYearRepository.deleteById(id);
     }
+
+
+
 }

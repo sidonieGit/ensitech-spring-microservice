@@ -1,5 +1,7 @@
 package com.project.academic_service.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.project.academic_service.enumeration.TypePeriod;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -16,10 +18,10 @@ public class Period {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
 
     @NotBlank(message = "this field can't be blank")
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String entitled;
 
     @Enumerated(EnumType.STRING)
@@ -28,16 +30,25 @@ public class Period {
 
 
     @Column(name = "started_at", nullable = false)
+    @JsonFormat(pattern = "dd-MM-yyyy")
     private LocalDate startedAt;
 
     @Column(name = "ended_at", nullable = false)
+    @JsonFormat(pattern = "dd-MM-yyyy")
     private LocalDate endedAt;
 
     @Column(name = "created_at", nullable = false)
+    @JsonFormat(pattern = "dd-MM-yyyy")
     private LocalDateTime createdAt;
 
     @Column(name = "updated", nullable = false)
+    @JsonFormat(pattern = "dd-MM-yyyy")
     private LocalDateTime updatedAt;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "academic_year_id", nullable = true)
+    @JsonBackReference
+    private AcademicYear academicYear;
 
     @PrePersist
     protected void onCreate(){
@@ -49,5 +60,6 @@ public class Period {
     protected void onUpdate(){
         this.updatedAt=LocalDateTime.now();
     }
+
 
 }

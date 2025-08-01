@@ -15,6 +15,7 @@ public class PeriodUpdateMapper implements BiFunction<PeriodDTO, Period, Period>
         period.setTypePeriod(periodDTO.typePeriod());
         period.setStartedAt(periodDTO.startedAt());
         period.setEndedAt(periodDTO.endedAt());
+//        period.getAcademicYear().setId(periodDTO.academicYearId());
         return period;
     }
 }

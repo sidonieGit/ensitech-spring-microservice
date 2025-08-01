@@ -17,6 +17,7 @@ public class AcademicYearUpdateMapper implements BiFunction<AcademicDTO, Academi
         academicYear.setEndDate(academicDTO.endDate());
         academicYear.setStatus(academicDTO.status());
 
+
         academicYear.setUpdatedAt(LocalDateTime.now());
 
         return academicYear;

@@ -1,6 +1,8 @@
 package com.project.academic_service.service;
 
+import com.project.academic_service.dao.repository.AcademicYearRepository;
 import com.project.academic_service.dao.repository.PeriodRepository;
+import com.project.academic_service.domain.AcademicYear;
 import com.project.academic_service.domain.Period;
 import com.project.academic_service.dto.PeriodDTO;
 import com.project.academic_service.exception.ObjectAlreadyExistsException;
@@ -19,13 +21,15 @@ public class PeriodServiceImpl implements IPeriodService{
     private final PeriodDTOMapper periodDTOMapper;
     private final PeriodEntityMapper periodEntityMapper;
     private final PeriodUpdateMapper periodUpdateMapper;
+    private final AcademicYearRepository academicYearRepository;
 
 
-    public PeriodServiceImpl(PeriodRepository periodRepository, PeriodDTOMapper periodDTOMapper, PeriodEntityMapper periodEntityMapper, PeriodUpdateMapper periodUpdateMapper) {
+    public PeriodServiceImpl(PeriodRepository periodRepository, PeriodDTOMapper periodDTOMapper, PeriodEntityMapper periodEntityMapper, PeriodUpdateMapper periodUpdateMapper, AcademicYearRepository academicYearRepository) {
         this.periodRepository = periodRepository;
         this.periodDTOMapper = periodDTOMapper;
         this.periodEntityMapper = periodEntityMapper;
         this.periodUpdateMapper = periodUpdateMapper;
+        this.academicYearRepository = academicYearRepository;
     }
 
 
@@ -47,10 +51,14 @@ public class PeriodServiceImpl implements IPeriodService{
 
     @Override
     public Period create(PeriodDTO periodDTO) {
+        AcademicYear academicYear = this.academicYearRepository.findById(periodDTO.academicYearId())
+                .orElseThrow(()-> new NoSuchElementException("Academic year not found with id: "+ periodDTO.academicYearId()));
         if (this.periodRepository.existsByEntitled(periodDTO.entitled()))
             throw new ObjectAlreadyExistsException("This period already exist!");
 
         Period entity = this.periodEntityMapper.apply(periodDTO);
+
+        entity.setAcademicYear(academicYear);
         return this.periodRepository.save(entity);
 
     }
@@ -60,6 +68,14 @@ public class PeriodServiceImpl implements IPeriodService{
         Period existingPeriod = this.periodRepository.findById(id)
                 .orElseThrow(()-> new NoSuchElementException("There's no period with that id="+id));
 
+        if(periodDTO.academicYearId() != null){
+            if(existingPeriod.getAcademicYear().getId() != periodDTO.academicYearId()){
+                AcademicYear academicYear = this.academicYearRepository.findById(periodDTO.academicYearId())
+                        .orElseThrow(() -> new NoSuchElementException("Academic year not found with id: "+ periodDTO.academicYearId()) );
+
+                existingPeriod.setAcademicYear(academicYear);
+            }
+        }
         Period period = this.periodUpdateMapper.apply(periodDTO,existingPeriod);
         Period saved = this.periodRepository.save(period);
         return this.periodDTOMapper.apply(saved);
