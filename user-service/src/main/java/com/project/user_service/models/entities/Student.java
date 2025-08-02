@@ -19,19 +19,10 @@ import static com.fasterxml.jackson.annotation.JsonProperty.Access.READ_ONLY;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true, exclude = "courses") // Exclure la collection pour éviter les boucles infinies
-@DiscriminatorValue("1")
+@DiscriminatorValue("STUDENT")
 public class Student extends Person {
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true) // Le matricule doit être unique
     private String matricule;
 
-    // --- NOUVELLE RELATION MANY-TO-MANY ---
-//    @ManyToMany(fetch = FetchType.LAZY) // LAZY est important pour la performance
-//    @JoinTable(
-//            name = "student_courses", // Nom de la table de jointure
-//            joinColumns = @JoinColumn(name = "student_id"), // Clé étrangère vers Student
-//            inverseJoinColumns = @JoinColumn(name = "course_id") // Clé étrangère vers Course
-//    )
-//    @JsonIgnoreProperties("students") // Quand tu sérialises un cours, ignore sa liste d'étudiants
-//    private Set<Course> courses = new HashSet<>();
 }

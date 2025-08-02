@@ -11,6 +11,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true) // Important pour l'héritage !
 // @DiscriminatorValue("1") dit à Hibernate : "Si la colonne 'person_type' contient la valeur 1, alors cette ligne est un Teacher".
-@DiscriminatorValue("5")
+@DiscriminatorValue("ADMINISTRATOR")
 public class Administrator extends Director {
 }

@@ -13,7 +13,7 @@ import java.util.List;
 
 @RestController // Indique que cette classe est un controller REST qui retourne du JSON.
 @RequestMapping("/api/teachers") // Toutes les URL de ce controller commenceront par /api/teachers.
-//@CrossOrigin(origins = "http://localhost:4200") // On autorise explicitement l'origine de votre front-end Angular
+@CrossOrigin(origins = "http://localhost:4200") // On autorise explicitement l'origine de votre front-end Angular
 public class TeacherController {
 
     private final ITeacherService teacherService;

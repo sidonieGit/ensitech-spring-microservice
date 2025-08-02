@@ -15,7 +15,7 @@ import java.util.Date;
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 // @DiscriminatorColumn indique le nom de la colonne qui va différencier les types de Personnes.
 // Par défaut, le type de la colonne est STRING, mais vous avez mis INTEGER, c'est un choix valide.
-@DiscriminatorColumn(name="person_type", discriminatorType = DiscriminatorType.INTEGER)
+@DiscriminatorColumn(name="person_type", discriminatorType = DiscriminatorType.STRING)
 public abstract class Person implements Serializable {
     //  @Serial private static final long serialVersionUID = -8885817712041252438L;
     @Id
