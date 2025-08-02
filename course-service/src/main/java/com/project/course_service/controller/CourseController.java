@@ -1,4 +1,4 @@
-package com.project.course_service.entities.controller;
+package com.project.course_service.controller;
 
 import com.project.course_service.entities.dto.CourseDto;
 import com.project.course_service.service.common.ICourseService;
@@ -13,7 +13,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/courses")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:4200") // On autorise explicitement l'origine de votre front-end Angular
+//@CrossOrigin(origins = "http://localhost:4200") // On autorise explicitement l'origine de votre front-end Angular
 public class CourseController {
     private final ICourseService courseService;
 
