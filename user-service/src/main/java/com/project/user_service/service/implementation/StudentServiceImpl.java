@@ -108,4 +108,12 @@ public class StudentServiceImpl implements IStudentService {
 
         log.info("Suppression avec succès de l'étudiant avec ID: {}", id);
     }
+
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<StudentDto> getStudentsByIds(List<Long> ids) {
+        log.info("Récupération des étudiants pour les IDs : {}", ids);
+        return studentMapper.toDtoList(personRepository.findStudentsByIds(ids));
+    }
 }

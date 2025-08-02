@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true) // Important pour l'héritage !
-@DiscriminatorValue("3") // Valeur pour le StudyManager
+@DiscriminatorValue("STUDYMANAGER") // Valeur pour le StudyManager
 public class StudyManager extends Person{
     @Column(name = "password", nullable = false)
     private String password;

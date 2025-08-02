@@ -47,6 +47,11 @@ public class StudentController {
         // ce qui est la norme pour une suppression réussie.
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/by-ids")
+    public ResponseEntity<List<StudentDto>> getStudentsByIds(@RequestParam List<Long> ids) {
+        return ResponseEntity.ok(studentService.getStudentsByIds(ids));
+    }
 }
 
 
