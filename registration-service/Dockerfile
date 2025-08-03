@@ -1,4 +1,4 @@
-FROM ubuntu:latest
+FROM openjdk
 LABEL authors="jovy"
 
-ENTRYPOINT ["top", "-b"]
+ENTRYPOINT ["java", "-jar", ""]
