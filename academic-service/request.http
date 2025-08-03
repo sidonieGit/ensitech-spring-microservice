@@ -74,7 +74,7 @@ Content-Type: application/json
     "label":"2027 - 2029",
     "startDate": "2027-10-04",
     "endDate": "2028-06-09",
-    "status": "NOT_SET",
+    "status": "EN_PREPARATION",
     "periods": [
                 { "entitled": "Periode Inscription 2025 - 2026",
                   "typePeriod": "INSCRIPTION_PERIOD",
@@ -125,3 +125,8 @@ Content-Type: application/json
 
 
 }
+###
+PUT http://localhost:8085/api/academic-year/2/status?event=START
+
+###
+PUT http://localhost:8085/api/academic-year/4/status?event=COMPLETE
