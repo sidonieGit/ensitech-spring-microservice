@@ -31,3 +31,10 @@ build/
 
 ### VS Code ###
 .vscode/
+
+docker/.env
+docker/mysql
+
+application-*.properties
+application-*.yml
+application-*.yaml
