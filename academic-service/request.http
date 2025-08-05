@@ -71,28 +71,27 @@ POST http://localhost:8085/api/academic-year
 Content-Type: application/json
 
 {
-    "label":"2027 - 2029",
-    "startDate": "2027-10-04",
-    "endDate": "2028-06-09",
-    "status": "NOT_SET",
+    "label":"2029 - 2030",
+    "startDate": "2029-10-04",
+    "endDate": "2030-06-09",
+    "status": "EN_PREPARATION",
     "periods": [
-                { "entitled": "Periode Inscription 2025 - 2026",
+                { "entitled": "Periode Inscription 2029 - 2030",
                   "typePeriod": "INSCRIPTION_PERIOD",
-                  "startedAt": "2025-07-30",
-                  "endedAt":"2025-08-30"
+                  "startedAt": "2029-11-30",
+                  "endedAt":"2029-12-30"
                 },
                 { "entitled": "Periode COURS 2025 - 2026",
                   "typePeriod": "COURS_PERIOD",
-                  "startedAt": "2025-09-01",
-                  "endedAt":"2025-06-20"
+                  "startedAt": "2030-01-01",
+                  "endedAt":"2030-09-20"
                 },
                 { "entitled": "Periode EXAMENS 2025 - 2026",
                   "typePeriod": "EXAMENS_PERIOD",
-                  "startedAt": "2025-09-01",
-                  "endedAt":"2025-06-20"
+                  "startedAt": "2030-09-25",
+                  "endedAt":"2030-10-20"
                 }
                 ]
-
 
 }
 
@@ -101,27 +100,32 @@ PUT http://localhost:8085/api/academic-year/4
 Content-Type: application/json
 
 {
-    "label":"2027 - 2028",
-    "startDate": "2027-10-04",
-    "endDate": "2028-06-09",
-    "status": "EN_COURS",
+    "label":"2029 - 2030",
+    "startDate": "2029-10-04",
+    "endDate": "2030-06-09",
+    "status": "EN_PREPARATION",
     "periods": [
-                { "entitled": "Periode Inscription 2027 - 2028",
+                { "entitled": "Periode Inscription 2029 - 2030",
                   "typePeriod": "INSCRIPTION_PERIOD",
-                  "startedAt": "2027-07-30",
-                  "endedAt":"2028-08-30"
+                  "startedAt": "2029-11-30",
+                  "endedAt":"2029-12-30"
                 },
-                { "entitled": "Periode COURS 2027 - 2028",
+                { "entitled": "Periode COURS 2025 - 2026",
                   "typePeriod": "COURS_PERIOD",
-                  "startedAt": "2027-09-01",
-                  "endedAt":"2028-06-20"
+                  "startedAt": "2030-01-01",
+                  "endedAt":"2030-06-10"
                 },
-                { "entitled": "Periode EXAMENS 2027 - 2028",
+                { "entitled": "Periode EXAMENS 2025 - 2026",
                   "typePeriod": "EXAMENS_PERIOD",
-                  "startedAt": "2027-09-01",
-                  "endedAt":"2028-06-20"
+                  "startedAt": "2030-06-20",
+                  "endedAt":"2030-06-30"
                 }
                 ]
 
-
 }
+
+###
+PUT http://localhost:8085/api/academic-year/3/status?event=START
+
+###
+PUT http://localhost:8085/api/academic-year/3/status?event=COMPLETE
