@@ -6,6 +6,15 @@ pipeline {
     // 'any' signifie que Jenkins peut utiliser n'importe quel agent disponible.
     agent any
 
+        // NOUVELLE SECTION : Outils (Tools)
+        // C'est ici qu'on déclare les outils dont notre build a besoin.
+    tools {
+            // On demande à Jenkins d'utiliser un JDK.
+            // Le nom 'jdk21' doit correspondre à une configuration dans Jenkins.
+            // Nous allons configurer cela dans l'interface web.
+            jdk 'jdk21'
+    }
+
     // 2. Stages : Les grandes étapes de notre processus.
     stages {
         // --- Étape 1 : Checkout ---
