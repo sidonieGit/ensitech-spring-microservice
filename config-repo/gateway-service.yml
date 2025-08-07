@@ -29,6 +29,17 @@ spring:
           predicates:
             - Path=/api/courses/**
 
+
+        # Route pour authentication-service
+        - id: authentication-service-route
+          # uri:  http://localhost:8083
+          uri: lb://authentication-service
+          predicates:
+            - Path=/api/auth/**
+
+
+
+
       # Configuration CORS Globale
       globalcors:
         cors-configurations:
@@ -45,3 +56,4 @@ spring:
 
 # La configuration Eureka est déjà dans le fichier commun 'application.properties',
 # donc pas besoin de la répéter ici, sauf si vous voulez la surcharger.
+

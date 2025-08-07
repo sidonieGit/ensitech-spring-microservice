@@ -16,3 +16,11 @@ spring:
   # Définit le profil actif pour charger les configurations spécifiques à l'environnement.
   profiles:
     active: dev
+
+  jwt:
+    secret-key: 6cf511a59725fab8400f66c29f7ce41a398116b16914a538e1dcc389e07ee3fb
+
+#logging:
+  #level:
+    #org.springframework.cloud.gateway: DEBUG
+    #org.springframework.cloud.gateway.route.RouteDefinitionRouteLocator: DEBUG
