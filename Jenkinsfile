@@ -21,8 +21,8 @@ pipeline {
         stage('Build & Test with Maven') {
             steps {
                 // Exécute la commande Maven pour compiler et lancer les tests.
-                // 'bat' est pour Windows. Sur Mac/Linux, on utiliserait 'sh'.
-                bat './mvnw clean install'
+                // 'bat' est pour Windows. Sur Mac/Linux, on utiliserait 'sh' pour le conteneur Docker.
+                sh './mvnw clean install'
                 echo 'Build et tests terminés.'
             }
         }
