@@ -1,13 +1,11 @@
 package com.project.ensitech.authentication_service.service.common;
 
-import com.project.ensitech.authentication_service.model.dto.AuthenticationResponse;
-import com.project.ensitech.authentication_service.model.dto.LoginRequest;
-import com.project.ensitech.authentication_service.model.dto.RegisterRequest;
-
-import java.util.Optional;
+import com.project.ensitech.authentication_service.model.dto.*;
 
 public interface IAuthenticationService {
    // AuthenticationResponse register(RegisterRequest req);
-    String register(RegisterRequest req);
-    AuthenticationResponse login(LoginRequest req);
+    String register(RegisterRequestDto req);
+    AuthenticationResponseDto login(LoginRequestDto req);
+    String updatePassword(UpdatePasswordRequestDto request);
+    String updateEmail(Integer userId, UpdateEmailRequestDto request);
 }

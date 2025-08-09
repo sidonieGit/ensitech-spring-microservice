@@ -1,8 +1,6 @@
 package com.project.ensitech.authentication_service.controller;
 
-import com.project.ensitech.authentication_service.model.dto.AuthenticationResponse;
-import com.project.ensitech.authentication_service.model.dto.LoginRequest;
-import com.project.ensitech.authentication_service.model.dto.RegisterRequest;
+import com.project.ensitech.authentication_service.model.dto.*;
 import com.project.ensitech.authentication_service.service.common.IAuthenticationService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -22,16 +20,27 @@ private final IAuthenticationService iAuthenticationService;
     //public ResponseEntity<AuthenticationResponse> register(
     public ResponseEntity<String> register(
             @Valid
-            @RequestBody RegisterRequest request
+            @RequestBody RegisterRequestDto request
     ) {
       return ResponseEntity.ok(iAuthenticationService.register(request));
     }
     @PostMapping("/login")
-    public ResponseEntity<AuthenticationResponse> login(
+    public ResponseEntity<AuthenticationResponseDto> login(
             @Valid
-            @RequestBody LoginRequest request
+            @RequestBody LoginRequestDto request
     ) {
         return ResponseEntity.ok(iAuthenticationService.login(request));
+    }
+
+    @PutMapping("/update-password")
+    public ResponseEntity<String> updatePassword(@Valid @RequestBody UpdatePasswordRequestDto request) {
+        return ResponseEntity.ok(iAuthenticationService.updatePassword( request));
+
+    }
+
+    @PutMapping("/update-email/{id}")
+    public ResponseEntity<String> updateEmail(@Valid @PathVariable Integer id, @RequestBody UpdateEmailRequestDto request) {
+        return ResponseEntity.ok(iAuthenticationService.updateEmail(id, request));
     }
 
 }

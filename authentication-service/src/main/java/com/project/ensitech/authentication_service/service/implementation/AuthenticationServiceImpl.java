@@ -1,11 +1,10 @@
 package com.project.ensitech.authentication_service.service.implementation;
 
 import com.project.ensitech.authentication_service.config.security.jwt.JwtUtil;
-import com.project.ensitech.authentication_service.model.dto.AuthenticationResponse;
-import com.project.ensitech.authentication_service.model.dto.LoginRequest;
-import com.project.ensitech.authentication_service.model.dto.RegisterRequest;
+import com.project.ensitech.authentication_service.model.dto.*;
 import com.project.ensitech.authentication_service.model.entity.User;
 import com.project.ensitech.authentication_service.model.enumeration.Role;
+import com.project.ensitech.authentication_service.model.mapper.UserMapper;
 import com.project.ensitech.authentication_service.repository.UserRepository;
 import com.project.ensitech.authentication_service.service.common.IAuthenticationService;
 import lombok.RequiredArgsConstructor;
@@ -22,9 +21,10 @@ public class AuthenticationServiceImpl implements IAuthenticationService {
     private final PasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
     private final AuthenticationManager authenticationManager;
+    private final UserMapper userMapper;
     @Override
    // public AuthenticationResponse register(RegisterRequest request) {
-    public String register(RegisterRequest request) {
+    public String register(RegisterRequestDto request) {
         if (userRepository.existsByEmail(request.getEmail())) {
             throw new RuntimeException("Email attribué à un autre utilisateur");
 
@@ -44,7 +44,7 @@ public class AuthenticationServiceImpl implements IAuthenticationService {
     }
 
     @Override
-    public AuthenticationResponse login(LoginRequest request) {
+    public AuthenticationResponseDto login(LoginRequestDto request) {
 
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
@@ -59,11 +59,34 @@ public class AuthenticationServiceImpl implements IAuthenticationService {
         }
         //user.get
         var jwtToken = jwtUtil.generateToken(user);
-        return AuthenticationResponse.builder()
+        user.setToken(jwtToken);
+       /** return AuthenticationResponseDto.builder()
                 .id(user.getId())
                 .email(user.getEmail())
                 .role(user.getRole())
                 .token(jwtToken)
-                .build();
+                .build();*/
+       return userMapper.toUserDto(user);
+    }
+
+    public String updatePassword(UpdatePasswordRequestDto request) {
+        User user = userRepository.findByEmail(request.getEmail()).orElseThrow(()->  new RuntimeException("Utilisateur introuvable"));
+
+        if (!passwordEncoder.matches(request.getOldPassword(), user.getPassword())) {
+            // return "Ancien mot de passe incorrect";
+            throw new RuntimeException( "Ancien mot de passe incorrect");
+        }
+        user.setPassword(passwordEncoder.encode(request.getNewPassword()));
+        userRepository.save(user);
+        return "Mot de passe mis à jour";
+    }
+    public String updateEmail(Integer userId, UpdateEmailRequestDto request) {
+        User user = userRepository.findById(userId).orElseThrow(()->  new RuntimeException("Utilisateur introuvable"));
+        if (userRepository.existsByEmail(request.getNewEmail()))  throw new RuntimeException("Email déjà attribué à un utilisateur");// return "Email déjà pris";
+
+
+        user.setEmail(request.getNewEmail());
+        userRepository.save(user);
+        return "Email mis à jour";
     }
 }
