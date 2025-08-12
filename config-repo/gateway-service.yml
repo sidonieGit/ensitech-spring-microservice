@@ -15,24 +15,24 @@ spring:
           enabled: true
           lower-case-service-id: true
 
-      # Définition des règles de routage
+      #Définition des règles de routage
       routes:
-        # Route pour user-service
+        #Route pour user-service
         - id: user-service-route
           uri: lb://user-service
           predicates:
             - Path=/api/teachers/**, /api/students/**, /api/studymanagers/**, /api/directors/**, /api/administrators/**
 
-        # Route pour course-service
+        #Route pour course-service
         - id: course-service-route
           uri: lb://course-service
           predicates:
             - Path=/api/courses/**
 
-      # Configuration CORS Globale
+      #Configuration CORS Globale
       globalcors:
         cors-configurations:
-          '[/**]': # S'applique à toutes les routes
+          '[/**]': #S'applique à toutes les routes
             allowed-origins: "http://localhost:4200"
             allowed-methods:
               - GET
@@ -43,5 +43,6 @@ spring:
             allowed-headers: "*"
             allow-credentials: true
 
-# La configuration Eureka est déjà dans le fichier commun 'application.properties',
-# donc pas besoin de la répéter ici, sauf si vous voulez la surcharger.
+#La configuration Eureka est déjà dans le fichier commun 'application.properties',
+#donc pas besoin de la répéter ici, sauf si vous voulez la surcharger.
+#Ajout d'un commentaire pour forcer la mise à jour Git suite changement encodage en utf-8 pour le build par jenkins.

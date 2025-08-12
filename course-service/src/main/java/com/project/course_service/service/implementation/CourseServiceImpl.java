@@ -2,15 +2,17 @@ package com.project.course_service.service.implementation;
 
 import com.project.course_service.entities.Course;
 import com.project.course_service.entities.dto.CourseDto;
+import com.project.course_service.entities.dto.Teacher;
 import com.project.course_service.exception.ResourceNotFoundException;
 import com.project.course_service.feign.UserRestClient;
 import com.project.course_service.repositories.CourseRepository;
 import com.project.course_service.service.common.ICourseService;
 import com.project.course_service.service.mappeur.CourseMapper;
-import org.springframework.transaction.annotation.Transactional;
+import feign.FeignException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
 import java.util.List;
@@ -23,7 +25,6 @@ public class CourseServiceImpl implements ICourseService {
     private final CourseRepository courseRepository;
     private final UserRestClient userRestClient;
     private final CourseMapper courseMapper;
-
     // --- Méthodes CRUD de base ---
 
     @Override
@@ -92,16 +93,65 @@ public class CourseServiceImpl implements ICourseService {
 
     // --- Méthodes d'association ---
 
+
+    /**
+     * Assigne un enseignant à un cours existant.
+     * Cette méthode suit les bonnes pratiques de gestion d'erreurs et de transactions.
+     * @param courseId L'ID du cours à modifier.
+     * @param teacherId L'ID de l'enseignant à assigner.
+     * @return Le DTO du cours mis à jour et enrichi avec les informations de l'enseignant.
+     */
     @Override
-    @Transactional
+    @Transactional // L'opération modifie la base de données, elle doit être transactionnelle.
     public CourseDto assignTeacherToCourse(Long courseId, Long teacherId) {
-        log.info("Association de l'enseignant ID {} au cours ID {}", teacherId, courseId);
-        validateTeacherExists(teacherId); // Valide que l'enseignant existe dans user-service
-        Course course = findCourseById(courseId);
-        course.setTeacherId(teacherId);
-        Course savedCourse = courseRepository.save(course);
-        return enrichDto(courseMapper.toDto(savedCourse), savedCourse);
+        log.info("Début - Association de l'enseignant ID {} au cours ID {}", teacherId, courseId);
+
+        // --- Étape 1 : Valider les entrées (partie de l'Arrange/Act) ---
+
+        // On récupère le cours depuis la base. Si non trouvé, on lance une exception métier claire.
+        Course courseFromDb = courseRepository.findById(courseId)
+                .orElseThrow(() -> {
+                    log.warn("Échec : Cours non trouvé avec l'ID {}", courseId);
+                    return new ResourceNotFoundException("Cours non trouvé avec l'ID : " + courseId);
+                });
+
+        // On valide que l'enseignant existe en appelant l'autre microservice.
+        // C'est aussi une bonne pratique de créer une méthode privée pour cette logique.
+        validateTeacherExists(teacherId);
+
+        // --- Étape 2 : Appliquer la logique métier (partie de l'Act) ---
+
+        // On met à jour l'ID de l'enseignant sur l'entité.
+        courseFromDb.setTeacherId(teacherId);
+
+        // On sauvegarde l'entité modifiée.
+        Course savedCourse = courseRepository.save(courseFromDb);
+        log.info("Association en base de données réussie pour le cours ID {}", courseId);
+
+        // --- Étape 3 : Préparer la réponse (partie de l'Assert/Retour) ---
+
+        // On convertit l'entité sauvegardée en DTO.
+        CourseDto courseDto = courseMapper.toDto(savedCourse);
+
+        // On enrichit le DTO avec l'objet Teacher complet (récupéré une deuxième fois, ou on pourrait optimiser).
+        // C'est cette étape qui remplit le champ 'teacher' dans le DTO.
+        enrichDtoWithTeacher(courseDto, savedCourse.getTeacherId());
+
+        return courseDto;
     }
+
+    // --- Méthodes privées pour la clarté ---
+
+    private void validateTeacherExists(Long teacherId) {
+        try {
+            log.debug("Validation de l'enseignant ID {} via Feign.", teacherId);
+            userRestClient.getTeacherById(teacherId);
+        } catch (FeignException.NotFound e) {
+            log.warn("Validation échouée : Enseignant non trouvé avec ID {}", teacherId);
+            throw new ResourceNotFoundException("Validation échouée : Enseignant non trouvé avec l'ID : " + teacherId);
+        }
+    }
+
 
     @Override
     @Transactional
@@ -157,12 +207,18 @@ public class CourseServiceImpl implements ICourseService {
         return courseRepository.findById(courseId)
                 .orElseThrow(() -> new ResourceNotFoundException("Cours non trouvé avec l'ID : " + courseId));
     }
-
-    private void validateTeacherExists(Long teacherId) {
-        try {
-            userRestClient.getTeacherById(teacherId);
-        } catch (Exception e) {
-            throw new ResourceNotFoundException("Validation échouée : Enseignant non trouvé avec l'ID : " + teacherId);
+    private void enrichDtoWithTeacher(CourseDto dto, Long teacherId) {
+        if (teacherId != null) {
+            try {
+                log.debug("Enrichissement du DTO avec les détails de l'enseignant ID {}", teacherId);
+                // On appelle Feign pour récupérer l'objet Teacher complet
+                Teacher teacher = userRestClient.getTeacherById(teacherId);
+                // On le place dans le DTO pour la réponse finale
+                dto.setTeacher(teacher);
+            } catch (Exception e) {
+                log.error("Impossible de récupérer les détails de l'enseignant ID {} pour l'enrichissement.", teacherId, e);
+                // On ne bloque pas la réponse, mais on logue l'erreur.
+            }
         }
     }
 
@@ -174,7 +230,7 @@ public class CourseServiceImpl implements ICourseService {
             // On "traduit" l'exception technique de Feign en une exception métier claire.
             throw new ResourceNotFoundException("Validation échouée : Étudiant non trouvé avec l'ID : " + studentId);
         }
-}
+    }
     private CourseDto enrichDto(CourseDto dto, Course course) {
         // Enrichir avec le teacher via Feign
         if (course.getTeacherId() != null) {
