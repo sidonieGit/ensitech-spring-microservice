@@ -27,6 +27,7 @@
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+
         </dependency>
         <!-- 3. Dépendance INDISPENSABLE pour contacter le Config Server -->
         <dependency>
