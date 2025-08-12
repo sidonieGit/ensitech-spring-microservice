@@ -16,4 +16,15 @@ spring:
   #Définit le profil actif pour charger les configurations spécifiques à l'environnement.
   profiles:
     active: dev
-    #Ajout d'un commentaicd re pour forcer la mise à jour Git suite changement encodage en utf-8 pour le build par jenkins.
+
+
+
+ #ici sera la clé secrete
+#logging:
+  #level:
+    #org.springframework.cloud.gateway: DEBUG
+    #org.springframework.cloud.gateway.route.RouteDefinitionRouteLocator: DEBUG
+
+    #Ajout d'un commentaire pour forcer la mise à jour Git suite changement encodage en utf-8 pour le build par jenkins.
+
+ 
