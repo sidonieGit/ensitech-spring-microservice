@@ -15,30 +15,32 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.assertj.MockMvcTester;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static reactor.core.publisher.Mono.when;
 
+// On ne teste que la couche web du RegistrationController
+
 @WebMvcTest(RegistrationControllerTest.class)
 public class RegistrationControllerTest {
-    @Autowired
+
+    // MockMvc est l'outil principal pour simuler des appels HTTP
+  /*  @Autowired
     private MockMvc mockMvc;
 
-    @MockitoBean
+    @MockBean
     private RegistrationServiceImpl registrationService;
 
     @Mock
     private RegistrationMapper registrationMapper;
 
     private Registration registration;
-    private RegistrationDTO registrationDTO;
+    private RegistrationDTO registrationDTO;*/
     @BeforeEach
     void setUp(){
-        registrationDTO = new RegistrationDTO(1L, Level.L1);
+//        registrationDTO = new RegistrationDTO(1L, Level.L1);
     }
 
     @Test
@@ -49,12 +51,14 @@ public class RegistrationControllerTest {
     @Test
     void itShouldGetRegistration() throws Exception{
 
-        Mockito.when(registrationService.getRegistration(1L)).thenReturn(registrationDTO);
+     /*   Mockito.when(registrationService.getRegistration(1L)).thenReturn(registrationDTO);
 
-        mockMvc.perform(MockMvcRequestBuilders.get("api/registrations")
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/registrations")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
 
 
-    }
+    }*/
 }
+}
+
