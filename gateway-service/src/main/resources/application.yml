@@ -18,7 +18,8 @@ spring:
     active: dev
 
 
-  ici sera la clé secrete
+
+ #ici sera la clé secrete
 #logging:
   #level:
     #org.springframework.cloud.gateway: DEBUG
@@ -26,3 +27,4 @@ spring:
 
     #Ajout d'un commentaire pour forcer la mise à jour Git suite changement encodage en utf-8 pour le build par jenkins.
 
+ 
