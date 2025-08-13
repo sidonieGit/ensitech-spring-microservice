@@ -13,5 +13,6 @@ services:
       - mysql_academic_data:/var/lib/mysql
       - ./mysql/init.sql:/docker-entrypoint-initdb.d/init.sql
 
+
 volumes:
   mysql_academic_data:
