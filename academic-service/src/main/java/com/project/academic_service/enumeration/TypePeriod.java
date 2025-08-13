@@ -5,3 +5,4 @@ public enum TypePeriod {
     COURS_PERIOD,
     EXAMENS_PERIOD
 }
+        
