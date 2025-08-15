@@ -8,6 +8,7 @@ RUN ./mvnw dependency:go-offline
 # Copy the rest of the source code
 COPY src/ ./src
 
+
 # Build the final JAR
 RUN ./mvnw clean package -DskipTests
 
@@ -26,3 +27,4 @@ COPY --from=build target/${JAR_FILE} app.jar
 #Expose the port your application runs on
 EXPOSE 8086
 ENTRYPOINT ["java", "-jar", "app.jar"]
+
