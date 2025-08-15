@@ -2,6 +2,7 @@ package com.project.registration_service.mapper;
 
 import com.project.registration_service.domain.Registration;
 import com.project.registration_service.dto.RegistrationDTO;
+import com.project.registration_service.dto.RegistrationStudentDTO;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -29,6 +30,17 @@ public class RegistrationMapper {
         );
     }
 
+//    public RegistrationStudentDTO transformToDto(Registration registration){
+//        if (registration == null)
+//            return null;
+//        return new RegistrationStudentDTO(
+//                registration.getRegistrationNumber(),
+//                registration.getLevel(),
+//                registration.getDateOfRegistration(),
+//
+//        );
+//    }
+
     // Without stream
     /*
     public List<RegistrationDTO> toDtoList(List<Registration> registrations){
@@ -52,5 +64,6 @@ public class RegistrationMapper {
                 collect(Collectors.toList()); // Reuses your existing toDto method
 
     }
+
 
 }

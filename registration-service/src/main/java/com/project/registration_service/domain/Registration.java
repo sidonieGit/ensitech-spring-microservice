@@ -1,6 +1,7 @@
 package com.project.registration_service.domain;
 
 import com.project.registration_service.enumeration.Level;
+import com.project.registration_service.model.Student;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -9,7 +10,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Setter @Getter @ToString
-@NoArgsConstructor @AllArgsConstructor
+@NoArgsConstructor @AllArgsConstructor @Builder
 public class Registration {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,6 +22,9 @@ public class Registration {
     private Level level;
 
     private LocalDateTime dateOfRegistration;
+
+    private String matricule;
+
 
     @PrePersist
     void OnCreate(){
