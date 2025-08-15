@@ -29,6 +29,7 @@
         <module>course-service</module>
         <module>registration-service</module>
         <module>authentication-service</module>
+        <module>training-service</module>
 
 
 
@@ -95,6 +96,21 @@
                         </annotationProcessorPaths>
                     </configuration>
                 </plugin>
+
+                <!-- Spring Boot Maven Plugin -->
+                <plugin>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-maven-plugin</artifactId>
+                    <version>3.1.5</version>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>repackage</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+
             </plugins>
         </pluginManagement>
     </build>

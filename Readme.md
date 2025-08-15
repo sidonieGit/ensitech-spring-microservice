@@ -16,14 +16,14 @@ Le système est décomposé en plusieurs microservices, chacun ayant sa propre r
 
 *   **`user-service` (Port 8081)**: Gère les utilisateurs (étudiants, enseignants, etc.).
 *   **`course-service` (Port 8082)**: Gère les cours, les matières et les associations avec les utilisateurs.
+*   **`authentication-service` (Port 8083)**: Gère le login et les comptes utilisateurs.
+*   **`training-service` (Port 8084)**: Gère les cours, les evalutions, les specialités et les associations entre evaluation et etudiants.
 
 ### Services à Ajouter
 
-*   `speciality-service`
-*   `evaluation-service`
 *   `academic-year-service`
 *   `inscription-service`
-*   `authentication-service`
+
 
 ## Prérequis
 
@@ -39,6 +39,8 @@ L'ordre de démarrage des services est **crucial** :
 2.  `discovery-service`
 3.  `user-service`
 4.  `course-service`
+5.   `authentication-service`
+6. `training-service`
 5.  `gateway-service`
 6.  (Et ensuite les autres services que vous ajouterez)
 
@@ -48,7 +50,7 @@ Attendez que chaque service ait bien démarré avant de lancer le suivant.
 
 ## Tester les Endpoints via la Gateway
 
-Toutes les requêtes de test doivent être faites sur le port de la passerelle (`8080`).
+Toutes les requêtes de test doivent être faites sur le port de la passerelle (`8888`).
 
 ### Gestion des Utilisateurs (routé vers `user-service`)
 
