@@ -1,4 +1,5 @@
-FROM eclipse-temurin:21-jdk-noble
+#Stage 1 : Build
+FROM eclipse-temurin:21-jdk-noble As builder
 LABEL authors="Jovy Nedved"
 
 WORKDIR /app
