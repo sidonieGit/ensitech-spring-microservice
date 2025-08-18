@@ -12,7 +12,7 @@
 
 	<artifactId>course-service</artifactId>
 	<name>course-service</name>
-	<description>Course  Service Microservice</description>
+	<description>Course Service Microservice</description>
 
 	<dependencies>
 		<dependency>
@@ -77,6 +77,12 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
+	<!-- jacoco pour le code coverage cest à dire pour générer un rapport -->
+	<dependency>
+		<groupId>org.jacoco</groupId>
+		<artifactId>jacoco-maven-plugin</artifactId>
+		<version>${jacoco.version}</version>
+	</dependency>
 
 	<build>
 		<plugins>
