@@ -77,6 +77,8 @@
             <!-- La version est gérée par le pom.xml parent -->
         </dependency>
 
+
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
@@ -95,6 +97,11 @@
     </dependencies>
    <build>
         <plugins>
+            <!-- jacoco pour le code coverage cest à dire pour générer un rapport -->
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+            </plugin>
           <plugin>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-maven-plugin</artifactId>
