@@ -15,12 +15,12 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/academic-year")
+@CrossOrigin("*")
 public class AcademicYearController {
 
     private final IAcademicYearService academicYearService;
     private final AcademicYearWorkflowService academicYearWorkflowService;
     private final AcademicDTOMapper academicDTOMapper;
-
 
     public AcademicYearController(IAcademicYearService academicYearService, AcademicYearWorkflowService academicYearWorkflowService, AcademicEntityMapper academicEntityMapper, AcademicDTOMapper academicDTOMapper) {
         this.academicYearService = academicYearService;

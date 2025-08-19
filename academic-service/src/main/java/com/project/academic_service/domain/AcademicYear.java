@@ -28,11 +28,11 @@ public class AcademicYear {
     private String label;
 
     @Column(name = "start_date", nullable = false)
-    @JsonFormat(pattern = "dd-MM-yyyy")
+    @JsonFormat(pattern = "MM-dd-yyyy")
     private LocalDate startDate;
 
     @Column(name="ended_date", nullable = false)
-    @JsonFormat(pattern = "dd-MM-yyyy")
+    @JsonFormat(pattern = "MM-dd-yyyy")
 
     private LocalDate endDate;
 
@@ -41,11 +41,11 @@ public class AcademicYear {
     private AcademicYearStatus status;
 
     @Column(name="created_at")
-    @JsonFormat(pattern = "dd-MM-yyyy")
+    @JsonFormat(pattern = "MM-dd-yyyy")
     private LocalDateTime createdAt;
 
     @Column(name="updated_at")
-    @JsonFormat(pattern = "dd-MM-yyyy")
+    @JsonFormat(pattern = "MM-dd-yyyy")
     private LocalDateTime updatedAt;
 
     @OneToMany(mappedBy = "academicYear", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
