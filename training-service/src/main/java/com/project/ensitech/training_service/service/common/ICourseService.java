@@ -12,4 +12,5 @@ public interface ICourseService {
     void deleteCourse(Long id);
     List<CourseDto> searchByTitle(String title);
     List<CourseDto> getAllCourses();
+    List<CourseDto> getAllCoursesByTeacher(Long id);
 }

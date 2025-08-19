@@ -1,5 +1,7 @@
 package com.project.ensitech.training_service.model.dto.evaluationDto;
 
+import com.project.ensitech.training_service.model.dto.UserDto;
+import com.project.ensitech.training_service.model.dto.courseDto.CourseDto;
 import com.project.ensitech.training_service.model.enumeration.EvaluationStatus;
 import com.project.ensitech.training_service.model.enumeration.EvaluationType;
 import jakarta.validation.constraints.NotBlank;
@@ -28,7 +30,9 @@ public class EvaluationDto {
     @NotNull(message = "Le status de l'évaluation  est obligatoire")
     private EvaluationStatus status;
     @NotNull(message = "Le cours est obligatoire")
-    private Long courseId;
+    // private Long courseId;
+    private CourseDto course;
     @NotNull(message = "L'étudiant est obligatoire")
     private Long studentId;
+    private UserDto student;
 }

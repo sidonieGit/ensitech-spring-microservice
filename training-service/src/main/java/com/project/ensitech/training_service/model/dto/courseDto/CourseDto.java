@@ -1,5 +1,6 @@
 package com.project.ensitech.training_service.model.dto.courseDto;
 
+import com.project.ensitech.training_service.model.dto.UserDto;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -21,5 +22,8 @@ public class CourseDto {
     private int coefficient;
     @NotNull(message = "Le nombre d'heure est obligatoire")
     private int hours;
+
+    private Long teacherId;
+    private UserDto teacher;
 
 }

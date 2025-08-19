@@ -1,5 +1,6 @@
 package com.project.ensitech.training_service.model.dto.evaluationDto;
 
+import com.project.ensitech.training_service.model.dto.UserDto;
 import com.project.ensitech.training_service.model.enumeration.EvaluationStatus;
 import com.project.ensitech.training_service.model.enumeration.EvaluationType;
 import jakarta.validation.constraints.NotBlank;
@@ -30,4 +31,5 @@ public class CreateEvaluationDto {
     private Long courseId;
     @NotNull(message = "L'étudiant est obligatoire")
     private Long studentId;
+    private UserDto student;
 }

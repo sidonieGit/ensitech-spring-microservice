@@ -1,5 +1,6 @@
 package com.project.ensitech.training_service.model.entity;
 
+import com.project.ensitech.training_service.model.dto.UserDto;
 import com.project.ensitech.training_service.model.enumeration.EvaluationType;
 import com.project.ensitech.training_service.model.enumeration.EvaluationStatus;
 import jakarta.persistence.*;
@@ -11,7 +12,7 @@ import java.time.LocalDate;
 
 @Data
 @Entity
-@Table(name = "evaluations")
+@Table(name = "evaluations", indexes = @Index(columnList = "studentId"))
 @NoArgsConstructor
 @AllArgsConstructor
 public class Evaluation {
@@ -40,6 +41,8 @@ public class Evaluation {
 
     // Student is external service — store studentId
     private Long studentId;
+    @Transient
+    private UserDto student;
 
 
 }

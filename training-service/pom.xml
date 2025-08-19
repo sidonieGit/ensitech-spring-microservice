@@ -102,12 +102,27 @@
 			<version>5.18.0</version>
 			<scope>test</scope>
 		</dependency>
+
+        <!--dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-openfeign-core</artifactId>
+        </dependency-->
+		<!--dependency>
+			<groupId>io.github.openfeign</groupId>
+			<artifactId>feign-core</artifactId>
+		</dependency-->
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-openfeign</artifactId>
+		</dependency>
+
 		<!-- NOUVELLE DÉPENDANCE : Base de données H2 pour les tests -->
 		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
 			<scope>test</scope>
 		</dependency>
+
 
 	</dependencies>
 

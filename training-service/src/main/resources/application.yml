@@ -39,3 +39,8 @@ eureka:
   instance:
     prefer-ip-address: true
 
+
+user:
+  service:
+    base-url: http://localhost:8081
+
