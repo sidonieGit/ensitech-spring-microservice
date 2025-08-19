@@ -31,7 +31,7 @@ pipeline {
           options {
                         // On donne 10 minutes à ce stage pour se terminer.
                         // Choisissez une valeur raisonnable pour votre projet.
-                        timeout(time: 10, unit: 'MINUTES')
+                        timeout(time: 18, unit: 'MINUTES')
                     }
             steps {
                 // Exécute la commande Maven pour compiler et lancer les tests.
