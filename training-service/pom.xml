@@ -6,7 +6,8 @@
 		<groupId>com.project.ensitech</groupId>
 		<artifactId>ensitech-parent</artifactId>
 		<version>1.0-SNAPSHOT</version>
-		<relativePath/> <!-- lookup parent from repository -->
+		<relativePath>../pom.xml</relativePath>
+
 	</parent>
 	<groupId>com.project.ensitech</groupId>
 	<artifactId>training-service</artifactId>
