@@ -1,5 +1,6 @@
 package com.project.ensitech.training_service.model.entity;
 
+import com.project.ensitech.training_service.model.dto.UserDto;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -9,9 +10,10 @@ import java.util.Set;
 @Getter
 @Setter
 @Entity
-@Table(name = "courses")
+@Table(name = "courses",indexes = @Index(columnList = "teacherId"))
 @NoArgsConstructor
 @AllArgsConstructor
+// @Table(indexes = @Index(columnList = "teacherId"))
 // Builder
 public class Course {
     @Id
@@ -28,7 +30,11 @@ public class Course {
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL)
     private Set<Evaluation> evaluations = new HashSet<>();
 
-    @Override
+    private Long teacherId;
+    @Transient
+    private UserDto teacher;
+
+   /* @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Course)) return false;
@@ -39,5 +45,5 @@ public class Course {
     @Override
     public int hashCode() {
         return getClass().hashCode();
-    }
+    }*/
 }

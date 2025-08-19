@@ -42,6 +42,10 @@ public class CourseController {
     public ResponseEntity<CourseDto> get(@Valid @PathVariable Long id) {
         return ResponseEntity.ok(iCourseService.getCourse(id));
     }
+    @GetMapping("/by-teacher/{idTeacher}")
+    public ResponseEntity<List<CourseDto>> getByTeacher(@Valid @PathVariable Long idTeacher) {
+        return ResponseEntity.ok(iCourseService.getAllCoursesByTeacher(idTeacher));
+    }
 
     @PutMapping
     public ResponseEntity<CourseDto> update( @Valid @RequestBody CourseDto courseDto) {

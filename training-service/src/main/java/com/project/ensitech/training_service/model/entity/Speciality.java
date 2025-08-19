@@ -35,7 +35,7 @@ public class Speciality {
     private Set<Course> courses = new HashSet<>();
     //private Set<Long> courses = new HashSet<>();
 
-    @Override
+    /*@Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Speciality)) return false;
@@ -46,5 +46,5 @@ public class Speciality {
     @Override
     public int hashCode() {
         return getClass().hashCode();
-    }
+    }*/
 }

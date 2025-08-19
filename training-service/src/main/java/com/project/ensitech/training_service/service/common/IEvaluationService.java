@@ -11,6 +11,6 @@ public interface IEvaluationService {
     EvaluationDto updateEvaluation(EvaluationDto dto);
     void deleteEvaluation(Long id);
     List<EvaluationDto> getAllEvaluations();
-    List<EvaluationDto> getEvaluationsByStudentId(Long studentId);
-    List<EvaluationDto> getEvaluationsByCourseId(Long courseId);
+    List<EvaluationDto> getAllEvaluationsByStudentId(Long studentId);
+    List<EvaluationDto> getAllEvaluationsByCourseId(Long courseId);
 }

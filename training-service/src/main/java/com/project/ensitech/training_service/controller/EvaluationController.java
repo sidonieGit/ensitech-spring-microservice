@@ -25,13 +25,13 @@ public class EvaluationController {
     public ResponseEntity<List<EvaluationDto>> getAllEvaluations() {
         return ResponseEntity.ok(iEvaluationService.getAllEvaluations());
     }
-    @GetMapping("/student/{id_student}")
-    public ResponseEntity<List<EvaluationDto>> getEvaluationsByStudent(@Valid @PathVariable Long id_student) {
-        return ResponseEntity.ok(iEvaluationService.getEvaluationsByStudentId(id_student));
+    @GetMapping("/by-student/{idStudent}")
+    public ResponseEntity<List<EvaluationDto>> getEvaluationsByStudent(@Valid @PathVariable Long idStudent) {
+        return ResponseEntity.ok(iEvaluationService.getAllEvaluationsByStudentId(idStudent));
     }
-    @GetMapping("/course/{id_course}")
-    public ResponseEntity<List<EvaluationDto>> getEvaluationsByCourse(@Valid @PathVariable Long id_course) {
-        return ResponseEntity.ok(iEvaluationService.getEvaluationsByCourseId(id_course));
+    @GetMapping("/by-course/{idCourse}")
+    public ResponseEntity<List<EvaluationDto>> getEvaluationsByCourse(@Valid @PathVariable Long idCourse) {
+        return ResponseEntity.ok(iEvaluationService.getAllEvaluationsByCourseId(idCourse));
     }
 
     @PostMapping
