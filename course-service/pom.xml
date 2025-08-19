@@ -77,15 +77,14 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
-	<!-- jacoco pour le code coverage cest à dire pour générer un rapport -->
-	<dependency>
-		<groupId>org.jacoco</groupId>
-		<artifactId>jacoco-maven-plugin</artifactId>
-		<version>${jacoco.version}</version>
-	</dependency>
 
 	<build>
 		<plugins>
+			<!-- jacoco pour le code coverage cest à dire pour générer un rapport -->
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+			</plugin>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
