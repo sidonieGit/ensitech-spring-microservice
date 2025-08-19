@@ -28,6 +28,11 @@ pipeline {
 
         // --- Étape 2 : Build & Test ---
         stage('Build & Test with Maven') {
+          options {
+                        // On donne 10 minutes à ce stage pour se terminer.
+                        // Choisissez une valeur raisonnable pour votre projet.
+                        timeout(time: 10, unit: 'MINUTES')
+                    }
             steps {
                 // Exécute la commande Maven pour compiler et lancer les tests.
                 // La phase 'verify' exécute le cycle de vie jusqu'aux tests d'intégration
