@@ -50,7 +50,7 @@ pipeline {
         always {
                 // ON A SIMPLEMENT SUPPRIMÉ LE BLOC JacocoPublisher
                 // C'est l'étape fournie par le plugin "Coverage"
-                publishCoverage adapters: [jacocoAdapter(path: '**/target/site/jacoco/jacoco.xml')]
+                recordCoverage(tools: [[parser: 'JACOCO', pattern: '**/target/site/jacoco/jacoco.xml']])
                 echo 'Rapport de couverture de code publié.'
 
                 // Nettoie l'espace de travail pour le prochain build.
