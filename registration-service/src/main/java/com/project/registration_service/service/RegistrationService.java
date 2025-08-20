@@ -8,8 +8,8 @@ import java.util.List;
 public interface RegistrationService {
     RegistrationDTO getRegistration(Long id);
     List<RegistrationDTO> getAllRegistrations();
-    RegistrationDTO createRegistration();
-    RegistrationDTO updateRegistration();
-    void deleteRegistration();
+    RegistrationDTO createRegistration(RegistrationDTO registrationDTO);
+    RegistrationDTO updateRegistration(Long id, RegistrationDTO registrationDTO);
+    void deleteRegistration(Long id);
 
 }

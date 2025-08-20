@@ -1,5 +1,6 @@
 package com.project.user_service.service.implementation;
 
+import com.project.user_service.exception.EmailAlreadyExistsException;
 import com.project.user_service.exception.ResourceNotFoundException;
 import com.project.user_service.models.dto.AdministratorDto;
 
@@ -32,7 +33,9 @@ public class AdministratorServiceImpl implements IAdministratorService {
         log.info("Tentative de création d'un Administrator avec email: {}", dto.getEmail());
 
         Administrator administrator = administratorMapper.toEntity(dto);
-
+        if (personRepository.findByEmail(administrator.getEmail()).isPresent()) {
+            throw new EmailAlreadyExistsException("L'email " + administrator.getEmail() + " est déjà utilisé par un autre utilisateur");
+        }
         // --- GESTION DE LA SÉCURITÉ ---
         // On hache le mot de passe fourni dans le DTO avant de le sauvegarder en base.
         // On ne sauvegarde JAMAIS un mot de passe en clair.

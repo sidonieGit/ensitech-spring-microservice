@@ -12,5 +12,4 @@ public record AcademicDTO(
          LocalDate endDate,
          AcademicYearStatus status,
          List<PeriodDTO> periods
-         ) {
-}
+         ) {}

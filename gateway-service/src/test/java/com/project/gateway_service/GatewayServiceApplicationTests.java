@@ -3,7 +3,6 @@ package com.project.gateway_service;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-// On enlève complètement la section 'properties'
 @SpringBootTest
 class GatewayServiceApplicationTests {
 

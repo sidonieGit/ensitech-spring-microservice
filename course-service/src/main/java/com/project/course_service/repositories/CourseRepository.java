@@ -16,5 +16,8 @@ public interface CourseRepository extends JpaRepository<Course, Long> {
 //    @Query("SELECT DISTINCT c FROM Course c LEFT JOIN FETCH c.teacher")
 //    List<Course> findAllWithTeacher();
 
-
+  /* @param title Le titre du cours à vérifier.
+     * @return true si un cours avec ce titre existe, false sinon.
+     */
+    boolean existsByTitle(String title);
 }
