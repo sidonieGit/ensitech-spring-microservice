@@ -1,5 +1,6 @@
 package com.project.user_service.service.implementation;
 
+import com.project.user_service.exception.EmailAlreadyExistsException;
 import com.project.user_service.exception.ResourceNotFoundException;
 import com.project.user_service.models.dto.TeacherDto;
 import com.project.user_service.models.entities.Teacher;
@@ -42,6 +43,9 @@ public class TeacherServiceImpl implements ITeacherService {
         log.info("Tentative de création d'un nouveau enseignant avec email: {}", dto.getEmail());
         // 1. Traduire le DTO en Entité
         Teacher teacher = teacherMapper.toEntity(dto);
+        if (personRepository.findByEmail(teacher.getEmail()).isPresent()) {
+            throw new EmailAlreadyExistsException("L'email " + teacher.getEmail() + " est déjà utilisé par un autre utilisateur");
+        }
         teacher.setCreatedAt(new Date());
 
         // 2. Sauvegarder l'entité

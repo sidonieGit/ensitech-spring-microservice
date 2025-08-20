@@ -1,5 +1,6 @@
 package com.project.user_service.service.implementation;
 
+import com.project.user_service.exception.EmailAlreadyExistsException;
 import com.project.user_service.exception.ResourceNotFoundException;
 import com.project.user_service.models.dto.StudyManagerDto;
 import com.project.user_service.models.entities.StudyManager;
@@ -31,7 +32,9 @@ public class StudyManagerServiceImpl implements IStudyManagerService {
         log.info("Tentative de création d'un StudyManager avec email: {}", dto.getEmail());
 
         StudyManager studyManager = studyManagerMapper.toEntity(dto);
-
+        if (personRepository.findByEmail(studyManager.getEmail()).isPresent()) {
+            throw new EmailAlreadyExistsException("L'email " + studyManager.getEmail() + " est déjà utilisé par un autre utilisateur");
+        }
         // --- GESTION DE LA SÉCURITÉ ---
         // On hache le mot de passe fourni dans le DTO avant de le sauvegarder en base.
         // On ne sauvegarde JAMAIS un mot de passe en clair.
