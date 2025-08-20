@@ -1,5 +1,6 @@
 package com.project.user_service.service.implementation;
 
+import com.project.user_service.exception.EmailAlreadyExistsException;
 import com.project.user_service.exception.ResourceNotFoundException;
 import com.project.user_service.models.dto.DirectorDto;
 
@@ -32,7 +33,9 @@ public class DirectorServiceImpl implements IDirectorService {
         log.info("Tentative de création d'un Director avec email: {}", dto.getEmail());
 
         Director director = directorMapper.toEntity(dto);
-
+        if (personRepository.findByEmail(director.getEmail()).isPresent()) {
+            throw new EmailAlreadyExistsException("L'email " + director.getEmail() + " est déjà utilisé par un autre utilisateur");
+        }
         // --- GESTION DE LA SÉCURITÉ ---
         // On hache le mot de passe fourni dans le DTO avant de le sauvegarder en base.
         // On ne sauvegarde JAMAIS un mot de passe en clair.
