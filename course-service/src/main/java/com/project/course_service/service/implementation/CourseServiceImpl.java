@@ -3,6 +3,7 @@ package com.project.course_service.service.implementation;
 import com.project.course_service.entities.Course;
 import com.project.course_service.entities.dto.CourseDto;
 import com.project.course_service.entities.dto.Teacher;
+import com.project.course_service.exception.ResourceAlreadyExistsException;
 import com.project.course_service.exception.ResourceNotFoundException;
 import com.project.course_service.feign.UserRestClient;
 import com.project.course_service.repositories.CourseRepository;
@@ -33,8 +34,15 @@ public class CourseServiceImpl implements ICourseService {
         log.info("Création d'un cours avec le titre: {}", dto.getTitle());
         Course course = courseMapper.toEntity(dto);
 
+        // --- CORRECTION DE LA LOGIQUE DE VÉRIFICATION ---
+        // On vérifie si un cours avec ce titre existe déjà AVANT de faire quoi que ce soit d'autre.
+        if (courseRepository.existsByTitle(dto.getTitle())) {
+            log.warn("Tentative de création d'un cours avec un titre existant : {}", dto.getTitle());
+            throw new ResourceAlreadyExistsException("Un cours avec le titre '" + dto.getTitle() + "' existe déjà.");
+        }
+
         // Si un teacherId est fourni à la création, on le valide et on l'assigne.
-        if (dto.getTeacherId() != null) {
+        if(dto.getTeacherId() != null) {
             validateTeacherExists(dto.getTeacherId());
             course.setTeacherId(dto.getTeacherId());
         }

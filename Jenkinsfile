@@ -28,11 +28,18 @@ pipeline {
 
         // --- Étape 2 : Build & Test ---
         stage('Build & Test with Maven') {
+          options {
+                        // On donne 10 minutes à ce stage pour se terminer.
+                        // Choisissez une valeur raisonnable pour votre projet.
+                        timeout(time: 18, unit: 'MINUTES')
+                    }
             steps {
                 // Exécute la commande Maven pour compiler et lancer les tests.
+                // La phase 'verify' exécute le cycle de vie jusqu'aux tests d'intégration
+                // et déclenche la génération du rapport JaCoCo.
                 // 'bat' est pour Windows. Sur Mac/Linux, on utiliserait 'sh' pour le conteneur Docker.
                 sh './mvnw clean install'
-                echo 'Build et tests terminés.'
+                echo 'Build, tests et génération du rapport de couverture terminés.'
             }
         }
     }
@@ -41,9 +48,14 @@ pipeline {
     post {
         // 'always' s'exécute toujours, que le build réussisse ou échoue.
         always {
-            // Nettoie l'espace de travail pour le prochain build.
-            cleanWs()
-            echo 'Espace de travail nettoyé.'
-        }
+                // ON A SIMPLEMENT SUPPRIMÉ LE BLOC JacocoPublisher
+                // C'est l'étape fournie par le plugin "Coverage"
+                recordCoverage(tools: [[parser: 'JACOCO', pattern: '**/target/site/jacoco/jacoco.xml']])
+                echo 'Rapport de couverture de code publié.'
+
+                // Nettoie l'espace de travail pour le prochain build.
+                cleanWs()
+                echo 'Espace de travail nettoyé.'
+            }
     }
 }

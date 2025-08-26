@@ -1,6 +1,7 @@
 package com.project.user_service.service.implementation;
 
 import com.project.user_service.enumeration.Gender;
+import com.project.user_service.exception.EmailAlreadyExistsException;
 import com.project.user_service.exception.ResourceNotFoundException;
 import com.project.user_service.models.dto.StudentDto;
 import com.project.user_service.models.entities.Student;
@@ -36,6 +37,9 @@ public class StudentServiceImpl implements IStudentService {
         log.info("Tentative de création d'un nouvel étudiant avec email: {}", studentDto.getEmail());
 
         Student student =studentMapper.toEntity(studentDto );
+        if (personRepository.findByEmail(student.getEmail()).isPresent()) {
+            throw new EmailAlreadyExistsException("L'email " + student.getEmail() + " est déjà utilisé par un autre utilisateur");
+        }
 
         // --- LOGIQUE MÉTIER : Génération du matricule ---
         // Exemple : ENS- suivi de 8 caractères aléatoires en majuscules.

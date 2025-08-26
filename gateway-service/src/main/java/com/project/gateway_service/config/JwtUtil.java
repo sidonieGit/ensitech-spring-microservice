@@ -13,9 +13,8 @@ import java.security.Key;
 @Service
 public class JwtUtil {
 
-   //  @Value("${jwt.secret-key}")
-    private String secretKey = "6cf511a59725fab8400f66c29f7ce41a398116b16914a538e1dcc389e07ee3fb";
-
+    @Value("${jwt.secret-key}")
+    private  String SECRET_KEY;
     /*public void validateToken(String token) {
         Jwts.parserBuilder()
                 .setSigningKey(Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8)))
@@ -31,7 +30,7 @@ public class JwtUtil {
                 .getBody();
     }
     private Key getSigninKey() {
-        byte [] keyBytes = Decoders.BASE64.decode(secretKey);
+        byte [] keyBytes = Decoders.BASE64.decode(SECRET_KEY);
         return Keys.hmacShaKeyFor(keyBytes);
     }
 }

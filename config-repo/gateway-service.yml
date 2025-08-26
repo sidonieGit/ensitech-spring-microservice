@@ -38,6 +38,7 @@ spring:
           predicates:
             - Path=/api/auth/**
 
+
         #Route pour registration-service
         - id: registration-service-route
           uri: lb://registration-service
@@ -50,8 +51,11 @@ spring:
           predicates:
             - Path=/api/academic-year/**
 
-
-
+        # Route pour training-service
+        - id: training-service-route
+          uri: lb://training-service
+          predicates:
+            - Path=/api/training/**
 
   
       #Configuration CORS Globale
@@ -60,6 +64,7 @@ spring:
         cors-configurations:
           '[/**]': #S'applique à toutes les routes
             allowed-origins: "http://localhost:4200"
+            #allowed-origins: "*"
             allowed-methods:
               - GET
               - POST
