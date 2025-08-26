@@ -2,6 +2,7 @@ package com.project.academic_service.controller;
 
 import com.project.academic_service.domain.AcademicYear;
 import com.project.academic_service.dto.AcademicDTO;
+import com.project.academic_service.dto.AcademicYearRestDTO;
 import com.project.academic_service.enumeration.AcademicYearEvent;
 import com.project.academic_service.mapper.AcademicDTOMapper;
 import com.project.academic_service.mapper.AcademicEntityMapper;
@@ -15,7 +16,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/academic-year")
-@CrossOrigin("*")
 public class AcademicYearController {
 
     private final IAcademicYearService academicYearService;
@@ -69,4 +69,11 @@ public class AcademicYearController {
 
         return ResponseEntity.ok(this.academicDTOMapper.apply(updatedYearStatus));
     }
+
+    @GetMapping("/by-label/{label}")
+    public AcademicYearRestDTO getAcademicYear(@PathVariable("label") String label){
+        return this.academicYearService.getAcademicYearByLabel(label);
+    }
+
+
 }

@@ -5,9 +5,11 @@ import com.project.academic_service.dao.repository.PeriodRepository;
 import com.project.academic_service.domain.AcademicYear;
 import com.project.academic_service.domain.Period;
 import com.project.academic_service.dto.PeriodDTO;
+import com.project.academic_service.dto.PeriodRestDTO;
 import com.project.academic_service.exception.ObjectAlreadyExistsException;
 import com.project.academic_service.mapper.PeriodDTOMapper;
 import com.project.academic_service.mapper.PeriodEntityMapper;
+import com.project.academic_service.mapper.PeriodRestDTOMapper;
 import com.project.academic_service.mapper.PeriodUpdateMapper;
 import org.springframework.stereotype.Service;
 
@@ -22,14 +24,16 @@ public class PeriodServiceImpl implements IPeriodService{
     private final PeriodEntityMapper periodEntityMapper;
     private final PeriodUpdateMapper periodUpdateMapper;
     private final AcademicYearRepository academicYearRepository;
+    private final PeriodRestDTOMapper periodRestDTOMapper;
 
 
-    public PeriodServiceImpl(PeriodRepository periodRepository, PeriodDTOMapper periodDTOMapper, PeriodEntityMapper periodEntityMapper, PeriodUpdateMapper periodUpdateMapper, AcademicYearRepository academicYearRepository) {
+    public PeriodServiceImpl(PeriodRepository periodRepository, PeriodDTOMapper periodDTOMapper, PeriodEntityMapper periodEntityMapper, PeriodUpdateMapper periodUpdateMapper, AcademicYearRepository academicYearRepository, PeriodRestDTOMapper periodRestDTOMapper) {
         this.periodRepository = periodRepository;
         this.periodDTOMapper = periodDTOMapper;
         this.periodEntityMapper = periodEntityMapper;
         this.periodUpdateMapper = periodUpdateMapper;
         this.academicYearRepository = academicYearRepository;
+        this.periodRestDTOMapper = periodRestDTOMapper;
     }
 
 
@@ -48,11 +52,20 @@ public class PeriodServiceImpl implements IPeriodService{
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public List<PeriodRestDTO> getAllPeriod() {
+        return this.periodRepository.findAll()
+                .stream()
+                .map(this.periodRestDTOMapper)
+                .collect(Collectors.toList());
+    }
+
 
     @Override
     public Period create(PeriodDTO periodDTO) {
         AcademicYear academicYear = this.academicYearRepository.findById(periodDTO.academicYearId())
                 .orElseThrow(()-> new NoSuchElementException("Academic year not found with id: "+ periodDTO.academicYearId()));
+
         if (this.periodRepository.existsByEntitled(periodDTO.entitled()))
             throw new ObjectAlreadyExistsException("This period already exist!");
 

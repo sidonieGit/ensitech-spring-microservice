@@ -5,14 +5,16 @@ import com.project.academic_service.dao.repository.PeriodRepository;
 import com.project.academic_service.domain.AcademicYear;
 import com.project.academic_service.domain.Period;
 import com.project.academic_service.dto.AcademicDTO;
+import com.project.academic_service.dto.AcademicYearRestDTO;
+import com.project.academic_service.dto.PeriodDTOCreate;
+import com.project.academic_service.exception.NoSuchAcademicYearExistsException;
 import com.project.academic_service.exception.ObjectAlreadyExistsException;
-import com.project.academic_service.mapper.AcademicDTOMapper;
-import com.project.academic_service.mapper.AcademicEntityMapper;
-import com.project.academic_service.mapper.AcademicYearUpdateMapper;
-import com.project.academic_service.mapper.PeriodEntityMapper;
+import com.project.academic_service.mapper.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.DateTimeException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -26,13 +28,19 @@ public class AcademicYearServiceImpl implements IAcademicYearService{
     private final AcademicEntityMapper academicEntityMapper;
     private final AcademicYearUpdateMapper academicYearUpdateMapper;
     private final PeriodEntityMapper periodEntityMapper;
+    private final AcademicYearRestMapper academicYearRestMapper;
+    private final PeriodEntityCreateMapper periodEntityCreateMapper;
+    private final PeriodRepository periodRepository;
 
-    public AcademicYearServiceImpl(AcademicYearRepository academicYearRepository, AcademicDTOMapper academicDTOMapper, AcademicEntityMapper academicEntityMapper, AcademicYearUpdateMapper academicYearUpdateMapper, PeriodEntityMapper periodEntityMapper) {
+    public AcademicYearServiceImpl(AcademicYearRepository academicYearRepository, AcademicDTOMapper academicDTOMapper, AcademicEntityMapper academicEntityMapper, AcademicYearUpdateMapper academicYearUpdateMapper, PeriodEntityMapper periodEntityMapper, AcademicYearRestMapper academicYearRestMapper, PeriodEntityCreateMapper periodEntityCreateMapper, PeriodRepository periodRepository) {
         this.academicYearRepository = academicYearRepository;
         this.academicDTOMapper = academicDTOMapper;
         this.academicEntityMapper = academicEntityMapper;
         this.academicYearUpdateMapper = academicYearUpdateMapper;
         this.periodEntityMapper = periodEntityMapper;
+        this.academicYearRestMapper = academicYearRestMapper;
+        this.periodEntityCreateMapper = periodEntityCreateMapper;
+        this.periodRepository = periodRepository;
     }
 
     @Override
@@ -54,8 +62,30 @@ public class AcademicYearServiceImpl implements IAcademicYearService{
 
     @Override
     public AcademicYear addAcademicYear(AcademicDTO academicDTO) {
+
         if(this.academicYearRepository.existsByLabel(academicDTO.label()))
-            throw new ObjectAlreadyExistsException("Already exists!");
+            throw new ObjectAlreadyExistsException("Academic year Already exists!");
+
+        if(academicDTO.startDate().isBefore(LocalDate.now()))
+            throw new DateTimeException("L'année academique ne peut pas commencer avant la date d'aujourd'hui !");
+
+        for (var periodDTO : academicDTO.periods()) {
+            if (periodRepository.existsByStartedAtAndEndedAt(periodDTO.startedAt(), periodDTO.endedAt())) {
+                throw new DateTimeException("Une période avec ces dates existe déjà.");
+            }
+        }
+
+        // Vérifier la validité des périodes par rapport à l'année académique
+        if (academicDTO.periods().isEmpty()) {
+            throw new IllegalArgumentException("La liste des périodes ne peut pas être vide.");
+        }
+
+        boolean areAllPeriodsWithinAcademicYear = academicDTO.periods().stream()
+                .allMatch(p -> !p.startedAt().isBefore(academicDTO.startDate()) && !p.endedAt().isAfter(academicDTO.endDate()));
+
+        if (!areAllPeriodsWithinAcademicYear) {
+            throw new DateTimeException("Les dates des périodes ne sont pas incluses dans les dates de l'année académique.");
+        }
 
         AcademicYear entity = academicEntityMapper.apply(academicDTO);
         return this.academicYearRepository.save(entity);
@@ -73,7 +103,6 @@ public class AcademicYearServiceImpl implements IAcademicYearService{
 
         return this.academicYearRepository.save(academicYear);
     }
-
 
     @Override
     public AcademicYear update(int id, AcademicYear academicYear) {
@@ -100,8 +129,8 @@ public class AcademicYearServiceImpl implements IAcademicYearService{
         if(academicDTO.periods() != null){
             existingYear.getPeriods().clear();
 
-            academicDTO.periods().forEach(periodDTO -> {
-                Period period = periodEntityMapper.apply(periodDTO);
+            academicDTO.periods().forEach(periodDTOCreate -> {
+                Period period = periodEntityCreateMapper.apply(periodDTOCreate);
                 period.setAcademicYear(existingYear); // relation inverse obligatoire
                 existingYear.getPeriods().add(period);
             });
@@ -117,6 +146,13 @@ public class AcademicYearServiceImpl implements IAcademicYearService{
         this.academicYearRepository.deleteById(id);
     }
 
+    @Override
+    public AcademicYearRestDTO getAcademicYearByLabel(String label) {
+        // Une seule requête à la base de données pour trouver l'année académique
+        return this.academicYearRepository.findAcademicYearByLabel(label)
+                .map(academicYearRestMapper::apply)
+                .orElseThrow(() -> new NoSuchAcademicYearExistsException("NO SUCH LABEL FOUND !"));
+    }
 
 
 }

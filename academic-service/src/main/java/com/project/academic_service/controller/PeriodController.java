@@ -2,6 +2,7 @@ package com.project.academic_service.controller;
 
 import com.project.academic_service.domain.Period;
 import com.project.academic_service.dto.PeriodDTO;
+import com.project.academic_service.dto.PeriodRestDTO;
 import com.project.academic_service.service.IPeriodService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,6 +27,11 @@ public class PeriodController {
     @GetMapping("/{id}")
     public ResponseEntity<PeriodDTO> getPeriod(@PathVariable Integer id){
         return ResponseEntity.ok(this.periodService.get(id));
+    }
+
+    @GetMapping("/periods")
+    public ResponseEntity<List<PeriodRestDTO>> getListOfPeriods(){
+        return ResponseEntity.ok(this.periodService.getAllPeriod());
     }
 
     @PostMapping
