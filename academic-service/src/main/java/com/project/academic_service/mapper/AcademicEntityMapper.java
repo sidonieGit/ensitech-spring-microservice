@@ -11,10 +11,11 @@ import java.util.function.Function;
 @Component
 public class AcademicEntityMapper implements Function<AcademicDTO, AcademicYear> {
 
-    private final PeriodEntityMapper periodEntityMapper;
+//    private final PeriodEntityMapper periodEntityMapper;
+    private final PeriodEntityCreateMapper periodEntityCreateMapper;
 
-    public AcademicEntityMapper(PeriodEntityMapper periodEntityMapper) {
-        this.periodEntityMapper = periodEntityMapper;
+    public AcademicEntityMapper(PeriodEntityCreateMapper periodEntityCreateMapper) {
+        this.periodEntityCreateMapper = periodEntityCreateMapper;
     }
 
     @Override
@@ -29,7 +30,7 @@ public class AcademicEntityMapper implements Function<AcademicDTO, AcademicYear>
         academicYear.setUpdatedAt(LocalDateTime.now());
 
         if (academicDTO.periods() != null)
-            academicDTO.periods().forEach(periodDTO -> academicYear.addPeriod(this.periodEntityMapper.apply(periodDTO)));
+            academicDTO.periods().forEach(periodCreateDTO -> academicYear.addPeriod(this.periodEntityCreateMapper.apply(periodCreateDTO)));
 
         return academicYear;
     }
