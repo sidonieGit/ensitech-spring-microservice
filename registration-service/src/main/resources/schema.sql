@@ -9,9 +9,11 @@ CREATE TABLE registration (
     registration_number BIGINT NOT NULL UNIQUE,
     level VARCHAR(255),
     date_of_registration TIMESTAMP,
-    matricule VARCHAR(255) NOT NULL
+    matricule VARCHAR(255) NOT NULL,
+    academic_year_label VARCHAR(255) NOT NULL
 );
 
+CREATE SEQUENCE IF NOT EXISTS registration_number_seq START WITH 1 INCREMENT BY 1;
 -- Création de la table student (simulation du user-service)
 -- Note : L'id doit être de type BIGINT car Long en Java correspond à un BIGINT en SQL
 
