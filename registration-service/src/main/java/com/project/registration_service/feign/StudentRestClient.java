@@ -6,11 +6,11 @@ import org.springframework.hateoas.PagedModel;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-@FeignClient(name = "user-service")
+@FeignClient(name = "user-service", fallback = StudentFallback.class)
 public interface StudentRestClient {
 
     @GetMapping("/api/students/{id}")
-    Student findStudentById(@PathVariable Long id);
+    Student getStudentById(@PathVariable Long id);
 
     @GetMapping("/api/students/by-matricule/{matricule}")
     Student getStudentByMatricule(@PathVariable String matricule);
