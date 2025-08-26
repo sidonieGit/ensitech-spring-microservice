@@ -7,10 +7,11 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Repository
 public interface PeriodRepository extends JpaRepository<Period, Integer> {
-    boolean existsByTypePeriod(TypePeriod typePeriod);
-    boolean existsByStartedAt(LocalDate startedAt);
+    boolean existsByStartedAtAndEndedAt(LocalDate start,LocalDate end);
     boolean existsByEntitled(String entitled);
+
 }

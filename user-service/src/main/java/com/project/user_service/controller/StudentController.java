@@ -52,6 +52,11 @@ public class StudentController {
     public ResponseEntity<List<StudentDto>> getStudentsByIds(@RequestParam List<Long> ids) {
         return ResponseEntity.ok(studentService.getStudentsByIds(ids));
     }
+
+    @GetMapping("/by-matricule/{matricule}")
+    public ResponseEntity<StudentDto> getStudentsByMatricule(@PathVariable String matricule){
+        return ResponseEntity.ok(studentService.getStudentByMatricule(matricule));
+    }
 }
 
 

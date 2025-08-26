@@ -1,5 +1,6 @@
 package com.project.user_service.service.implementation;
 
+import com.project.user_service.enumeration.Gender;
 import com.project.user_service.exception.EmailAlreadyExistsException;
 import com.project.user_service.exception.ResourceNotFoundException;
 import com.project.user_service.models.dto.StudentDto;
@@ -14,6 +15,8 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -119,5 +122,10 @@ public class StudentServiceImpl implements IStudentService {
     public List<StudentDto> getStudentsByIds(List<Long> ids) {
         log.info("Récupération des étudiants pour les IDs : {}", ids);
         return studentMapper.toDtoList(personRepository.findStudentsByIds(ids));
+    }
+
+    @Override
+    public StudentDto getStudentByMatricule(String matricule) {
+        return  studentMapper.toDto(this.personRepository.findStudentByMatricule(matricule));
     }
 }

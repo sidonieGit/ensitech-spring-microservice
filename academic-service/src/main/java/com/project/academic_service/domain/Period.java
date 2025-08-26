@@ -5,15 +5,15 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.project.academic_service.enumeration.TypePeriod;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
-@Data @NoArgsConstructor @AllArgsConstructor
+@Getter @Setter
+@NoArgsConstructor @AllArgsConstructor
+@Builder
 public class Period {
 
     @Id

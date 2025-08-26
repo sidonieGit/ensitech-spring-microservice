@@ -11,5 +11,5 @@ public record AcademicDTO(
          LocalDate startDate,
          LocalDate endDate,
          AcademicYearStatus status,
-         List<PeriodDTO> periods
+         List<PeriodDTOCreate> periods
          ) {}

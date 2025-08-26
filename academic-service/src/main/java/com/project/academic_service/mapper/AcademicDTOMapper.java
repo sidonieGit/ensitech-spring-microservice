@@ -3,6 +3,7 @@ package com.project.academic_service.mapper;
 import com.project.academic_service.domain.AcademicYear;
 import com.project.academic_service.dto.AcademicDTO;
 import com.project.academic_service.dto.PeriodDTO;
+import com.project.academic_service.dto.PeriodDTOCreate;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
@@ -13,9 +14,12 @@ import java.util.function.Function;
 public class AcademicDTOMapper implements Function<AcademicYear, AcademicDTO> {
 
     private final PeriodDTOMapper periodDTOMapper;
+    private final PeriodDTOCreateMapper periodDTOCreateMapper;
 
-    public AcademicDTOMapper(PeriodDTOMapper periodDTOMapper) {
+    public AcademicDTOMapper(PeriodDTOMapper periodDTOMapper, PeriodEntityCreateMapper periodEntityCreateMapper, PeriodDTOCreateMapper periodDTOCreateMapper) {
         this.periodDTOMapper = periodDTOMapper;
+
+        this.periodDTOCreateMapper = periodDTOCreateMapper;
     }
 
     @Override
@@ -27,7 +31,7 @@ public class AcademicDTOMapper implements Function<AcademicYear, AcademicDTO> {
                 academicYear.getStatus(),
                 academicYear.getPeriods()
                         .stream()
-                        .map(periodDTOMapper)
+                        .map(periodDTOCreateMapper)
                         .toList()
         );
     }

@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.project.academic_service.enumeration.AcademicYearStatus;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -25,6 +27,7 @@ public class AcademicYear {
     private int id;
 
     @Column(nullable = false)
+    @Pattern(regexp = "^2[0-9]{3}-2[0-9]{3}$", message = "Format du label de l'année academique invalide")
     private String label;
 
     @Column(name = "start_date", nullable = false)
