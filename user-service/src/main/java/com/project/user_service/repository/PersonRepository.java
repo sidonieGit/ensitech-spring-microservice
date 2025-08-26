@@ -65,6 +65,7 @@ public interface PersonRepository extends JpaRepository <Person, Long>{
     @Query("SELECT a FROM Administrator a WHERE a.id = :id")
     Optional<Administrator> findAdministratorById(Long id);
 
-
+    @Query("SELECT s FROM Student s WHERE s.matricule = :matricule")
+    Student findStudentByMatricule(@Param("matricule") String matricule);
 
 }
