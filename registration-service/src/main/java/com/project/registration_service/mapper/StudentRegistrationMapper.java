@@ -1,23 +1,17 @@
 package com.project.registration_service.mapper;
 
 import com.project.registration_service.domain.Registration;
-import com.project.registration_service.dto.CreateRegistrationDTO;
-import com.project.registration_service.dto.RegistrationStudentDTO;
+import com.project.registration_service.dto.*;
 import com.project.registration_service.enumeration.Level;
 import com.project.registration_service.model.Student;
 
-public final class StudentRegistrationMapper {
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
+public class StudentRegistrationMapper {
     private StudentRegistrationMapper() {}
 
-//    public static Registration toEntity(RegistrationStudentDTO dto) {
-//        if (dto == null) return null;
-//        return Registration.builder()
-//                .registrationNumber(Long.valueOf(dto.registrationNumber()))
-//                .level(dto.level() == null ? null : Level.valueOf(dto.level()))
-//                .dateOfRegistration(dto.dateOfRegistration().atStartOfDay())
-//                .matricule(dto.matricule())
-//                .build();
-//    }
 
     public static RegistrationStudentDTO toDto(Registration entity) {
         if (entity == null) return null;
@@ -45,20 +39,62 @@ public final class StudentRegistrationMapper {
                 .build();
     }
     public static Registration toEntity(CreateRegistrationDTO dto) {
+        if(dto == null){
+            return null;
+        }
         return Registration.builder()
-                .registrationNumber(dto.registrationNumber())
+//                .registrationNumber(dto.registrationNumber())
                 .matricule(dto.matricule())
                 .level(dto.level())
+                .academicYearLabel(dto.academicYearLabel())
                 .build();
     }
 
 
-    public static CreateRegistrationDTO toCreateDto(Registration entity) {
-        return new CreateRegistrationDTO(
-                entity.getRegistrationNumber(),
+    public static UpdateRegDTO toUpDateDto(Registration entity) {
+        if (entity == null)
+            return null;
+        return new UpdateRegDTO(
                 entity.getMatricule(),
                 entity.getLevel()
         );
+    }
+
+    public static RegDTO toDtoR(Registration registration){
+
+        return new RegDTO(
+                registration.getRegistrationNumber(),
+                registration.getLevel(),
+                registration.getMatricule(),
+                registration.getAcademicYearLabel(),
+                registration.getStudent()
+        );
+
+    }
+
+    public static Registration toEntityR(RegDTO regDTO){
+        if(regDTO == null){
+            throw new RuntimeException("Null Object Dto found");
+        }
+
+        Registration registration = new Registration();
+        registration.setRegistrationNumber(regDTO.registrationNumber());
+        registration.setMatricule(regDTO.matricule());
+        registration.setLevel(regDTO.level());
+        registration.setAcademicYearLabel(regDTO.academicYearLabel());
+        registration.setStudent(regDTO.student());
+
+        return registration;
+    }
+
+    public static List<RegDTO> toRegDTOList(List<Registration> registrations){
+        if (registrations == null || registrations.isEmpty()) {
+            return new ArrayList<>(); // Return an empty list for null or empty input
+        }
+        return registrations.stream()
+                .map(StudentRegistrationMapper::toDtoR).
+                collect(Collectors.toList());
+
     }
 
 }

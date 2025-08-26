@@ -1,9 +1,6 @@
 package com.project.registration_service.service;
 
-import com.project.registration_service.domain.Registration;
-import com.project.registration_service.dto.CreateRegistrationDTO;
-import com.project.registration_service.dto.RegistrationDTO;
-import com.project.registration_service.dto.RegistrationStudentDTO;
+import com.project.registration_service.dto.*;
 
 import java.util.List;
 
@@ -12,9 +9,15 @@ public interface RegistrationService {
     List<RegistrationDTO> getAllRegistrations();
     RegistrationDTO createRegistration(RegistrationDTO registrationDTO);
     RegistrationDTO updateRegistration(Long id, RegistrationDTO registrationDTO);
+
+    RegDTO updateRegs(Long id, UpdateRegDTO updateRegDTO);
+
     void deleteRegistration(Long id);
-    List<RegistrationStudentDTO> listByStudent(String matricule, boolean expandStudent);
-    RegistrationStudentDTO getById(Long id, boolean expandStudent);
-    RegistrationStudentDTO create(CreateRegistrationDTO dto);
+    RegDTO getById(Long id);
+    RegDTO getRegsByMatriculeAndAYLabel(String matricule, String label);
+    RegDTO processRegistration(CreateRegistrationDTO createRegistrationDTO);
+    List<RegDTO> getRegistrationListByMatricule(String matricule);
+    List<RegDTO> getAllRegs();
+    List<RegDTO> getRegistrationsByLabel(String label);
 
 }
