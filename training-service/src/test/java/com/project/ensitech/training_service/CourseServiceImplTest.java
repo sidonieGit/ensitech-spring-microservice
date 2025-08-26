@@ -33,13 +33,13 @@ class CourseServiceImplTest {
 
     @Test
     void createCourse_shouldSaveAndReturnDto() {
-        CreateCourseDto createCourseDto = new CreateCourseDto("Java", 3, 30);
+        CreateCourseDto createCourseDto = new CreateCourseDto("Java", 3, 30,null,null);
         Course course = new Course();
         course.setTitle("Java");
         // mapping courseDto -> entity
         when(courseMapper.toEntity(createCourseDto)).thenReturn(course);
         when(courseRepository.save(course)).thenReturn(course);
-        when(courseMapper.toDto(course)).thenReturn(new CourseDto(1L, "Java", 3, 30));
+        when(courseMapper.toDto(course)).thenReturn(new CourseDto(1L, "Java", 3, 30, null,null));
 
         CourseDto result = service.createCourse(createCourseDto);
 

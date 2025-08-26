@@ -44,6 +44,10 @@
         <lombok-mapstruct-binding.version>0.2.0</lombok-mapstruct-binding.version>
         <!-- Définir la version de JaCoCo en tant que propriété pour une gestion facile -->
         <jacoco.version>0.8.11</jacoco.version>
+
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
     </properties>
 
 
@@ -77,6 +81,7 @@
                     <configuration>
                         <source>${java.version}</source>
                         <target>${java.version}</target>
+                        <encoding>UTF-8</encoding>
                         <annotationProcessorPaths>
                             <!-- TRÈS IMPORTANT : Lombok et MapStruct doivent être configurés ensemble -->
                             <path>
