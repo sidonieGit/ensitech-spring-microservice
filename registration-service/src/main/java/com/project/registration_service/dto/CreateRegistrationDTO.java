@@ -9,5 +9,6 @@ public record CreateRegistrationDTO(
 //        Long registrationNumber,
         String matricule,
         Level level,
+        String specialityLabel,
         String academicYearLabel
 ) {}

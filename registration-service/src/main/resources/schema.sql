@@ -10,7 +10,8 @@ CREATE TABLE registration (
     level VARCHAR(255),
     date_of_registration TIMESTAMP,
     matricule VARCHAR(255) NOT NULL,
-    academic_year_label VARCHAR(255) NOT NULL
+    academic_year_label VARCHAR(255) NOT NULL,
+    speciality_label VARCHAR(255) NOT NULL
 );
 
 CREATE SEQUENCE IF NOT EXISTS registration_number_seq START WITH 1 INCREMENT BY 1;

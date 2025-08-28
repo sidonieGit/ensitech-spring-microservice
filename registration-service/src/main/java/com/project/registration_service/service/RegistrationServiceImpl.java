@@ -5,6 +5,7 @@ import com.project.registration_service.domain.Registration;
 import com.project.registration_service.dto.*;
 import com.project.registration_service.enumeration.AcademicYearStatus;
 import com.project.registration_service.feign.AcademicRestClient;
+import com.project.registration_service.feign.SpecialityRestClient;
 import com.project.registration_service.feign.StudentRestClient;
 import com.project.registration_service.mapper.RegistrationMapper;
 import com.project.registration_service.mapper.StudentRegistrationMapper;
@@ -31,13 +32,15 @@ public class RegistrationServiceImpl implements RegistrationService{
     private final StudentRestClient studentRestClient;
     private final AcademicRestClient academicRestClient;
     private final EntityManager entityManager;
+    private final SpecialityRestClient specialityRestClient;
 
-    public RegistrationServiceImpl(RegistrationRepository registrationRepository, RegistrationMapper registrationMapper, StudentRestClient studentRestClient, AcademicRestClient academicRestClient, EntityManager entityManager) {
+    public RegistrationServiceImpl(RegistrationRepository registrationRepository, RegistrationMapper registrationMapper, StudentRestClient studentRestClient, AcademicRestClient academicRestClient, EntityManager entityManager, SpecialityRestClient specialityRestClient) {
         this.registrationRepository = registrationRepository;
         this.registrationMapper = registrationMapper;
         this.studentRestClient = studentRestClient;
         this.academicRestClient = academicRestClient;
         this.entityManager = entityManager;
+        this.specialityRestClient = specialityRestClient;
     }
 
 
@@ -51,7 +54,7 @@ public class RegistrationServiceImpl implements RegistrationService{
     }
 
     /**
-     * Récupérer une inscription par id, enrichie optionnellement avec Student
+     * Récupérer une inscription par id
      */
     public RegDTO getById(Long id) {
        return this.registrationRepository.findById(id)
@@ -124,7 +127,8 @@ public class RegistrationServiceImpl implements RegistrationService{
 
     @Override
     public RegDTO processRegistration(CreateRegistrationDTO createRegistrationDTO) {
-        // Check 1: Fetch student and academic year
+
+        // Check 1: Fetch student, academic year and speciality
         Student student = studentRestClient.getStudentByMatricule(createRegistrationDTO.matricule());
         if (student == null) {
             throw new IllegalArgumentException("Student not found for the given matricule.");
@@ -133,6 +137,9 @@ public class RegistrationServiceImpl implements RegistrationService{
         AcademicYear academicYear = academicRestClient.getAcademicYearByLabel(createRegistrationDTO.academicYearLabel());
         if (academicYear == null) {
             throw new IllegalArgumentException("Aucune n'année academique ne correspond à ce label !");
+        }
+        if(this.specialityRestClient.getSpecialityByLabel(createRegistrationDTO.specialityLabel()) == null){
+            throw new IllegalArgumentException("Speciality not found for the given label !");
         }
 
         // Check 2: Student already registered for this academic year

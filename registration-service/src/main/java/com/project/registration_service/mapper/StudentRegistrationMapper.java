@@ -45,6 +45,7 @@ public class StudentRegistrationMapper {
         return Registration.builder()
 //                .registrationNumber(dto.registrationNumber())
                 .matricule(dto.matricule())
+                .specialityLabel(dto.specialityLabel())
                 .level(dto.level())
                 .academicYearLabel(dto.academicYearLabel())
                 .build();
@@ -57,6 +58,7 @@ public class StudentRegistrationMapper {
         return new UpdateRegDTO(
                 entity.getMatricule(),
                 entity.getLevel()
+
         );
     }
 
@@ -66,6 +68,7 @@ public class StudentRegistrationMapper {
                 registration.getRegistrationNumber(),
                 registration.getLevel(),
                 registration.getMatricule(),
+                registration.getSpecialityLabel(),
                 registration.getAcademicYearLabel(),
                 registration.getStudent()
         );
@@ -78,9 +81,10 @@ public class StudentRegistrationMapper {
         }
 
         Registration registration = new Registration();
-        registration.setRegistrationNumber(regDTO.registrationNumber());
+//        registration.setRegistrationNumber(regDTO.registrationNumber());
         registration.setMatricule(regDTO.matricule());
         registration.setLevel(regDTO.level());
+        registration.setSpecialityLabel(regDTO.specialityLabel());
         registration.setAcademicYearLabel(regDTO.academicYearLabel());
         registration.setStudent(regDTO.student());
 
