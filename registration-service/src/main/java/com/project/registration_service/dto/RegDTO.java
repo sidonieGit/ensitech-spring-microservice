@@ -9,6 +9,7 @@ public record RegDTO(
         Long registrationNumber,
         Level level, // Enum Level sous forme de String
         String matricule,
+        String specialityLabel,
         String academicYearLabel,
         Student student
 ) {}
