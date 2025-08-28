@@ -124,7 +124,6 @@ public class AcademicYearServiceImpl implements IAcademicYearService{
         AcademicYear existingYear = this.academicYearRepository.findByIdWithPeriods(id)
                 .orElseThrow(()-> new NoSuchElementException("Academic year not found with "+ id));
 
-
     academicYearUpdateMapper.apply(academicDTO, existingYear);
         if(academicDTO.periods() != null){
             existingYear.getPeriods().clear();
@@ -139,7 +138,6 @@ public class AcademicYearServiceImpl implements IAcademicYearService{
         return academicDTOMapper.apply(saved);
 
     }
-
 
     @Override
     public void delete(int id) {
