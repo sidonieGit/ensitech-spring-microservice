@@ -24,16 +24,18 @@ public class AcademicDTOMapper implements Function<AcademicYear, AcademicDTO> {
 
     @Override
     public AcademicDTO apply(AcademicYear academicYear) {
-        return  new AcademicDTO(
-                academicYear.getLabel(),
-                academicYear.getStartDate(),
-                academicYear.getEndDate(),
-                academicYear.getStatus(),
-                academicYear.getPeriods()
+        return  AcademicDTO.builder()
+                .id(academicYear.getId())
+                .label(academicYear.getLabel())
+                .endDate(academicYear.getEndDate())
+                .startDate(academicYear.getStartDate())
+                .status(academicYear.getStatus())
+                .periods(academicYear.getPeriods()
                         .stream()
                         .map(periodDTOCreateMapper)
                         .toList()
-        );
+                )
+                .build();
     }
 
 }
