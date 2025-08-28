@@ -52,4 +52,8 @@ public class SpecialityController {
     public ResponseEntity<List<SpecialityDto>> search(@RequestParam  String label) {
         return ResponseEntity.ok(iSpecialityService.searchByLabel(label));
     }
+    @GetMapping("by-speciality/{label}")
+    public ResponseEntity<SpecialityDto> getSpecialityByLabel(@Valid @PathVariable String label){
+        return ResponseEntity.ok(this.iSpecialityService.getSpecialityByLabel(label));
+    };
 }

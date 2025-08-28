@@ -81,6 +81,13 @@ public class SpecialityServiceImpl implements ISpecialityService {
     }
 
     @Override
+    public SpecialityDto getSpecialityByLabel(String label) {
+        return specialityRepository.findByLabel(label)
+                .map(specialityMapper::toDto)
+                .orElseThrow(()-> new EntityNotFoundException("Speciality not found with the label: "+ label));
+    }
+
+    @Override
     public SpecialityDto updateSpeciality(SpecialityDto request) {
         Speciality existing = specialityRepository.findById(request.getId())
                 .orElseThrow(() -> new EntityNotFoundException("Speciality not found: " + request.getId()));

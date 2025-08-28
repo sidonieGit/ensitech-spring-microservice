@@ -12,4 +12,5 @@ public interface ISpecialityService {
     void deleteSpeciality(Long id);
     List<SpecialityDto> searchByLabel(String label);
     List<SpecialityDto> getAllSpecialities();
+    SpecialityDto getSpecialityByLabel(String label);
 }
