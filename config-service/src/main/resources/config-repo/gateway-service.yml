@@ -38,24 +38,12 @@ spring:
           predicates:
             - Path=/api/auth/**
 
-
-        #Route pour registration-service
-        - id: registration-service-route
-          uri: lb://registration-service
-          predicates:
-            - Path=/api/registrations/**
-
-        #Route pour academic-service
-        - id: academic-service-route
-          uri: lb://academic-service
-          predicates:
-            - Path=/api/academic-year/**
-
         # Route pour training-service
         - id: training-service-route
           uri: lb://training-service
           predicates:
             - Path=/api/training/**
+
 
   
       #Configuration CORS Globale
