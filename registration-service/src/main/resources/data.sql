@@ -11,6 +11,8 @@
 -- Insertion d'inscriptions
 -- Les matricules correspondent à celles des étudiants ci-dessus
 INSERT INTO registration (id, registration_number, level, date_of_registration, matricule, academic_year_label, speciality_label) VALUES
-(1, 1001, 'L1', '2025-08-14 10:00:00', '2022-ST-101','2020-2021','Genie logiciel'),
-(2, 1002, 'L2', '2025-08-14 10:05:00', '2022-ST-101','2021-2022','Cybersécurité'),
-(3, 1003, 'L3', '2025-08-14 10:10:00', '2022-ST-102','2022-2023','Genie logiciel');
+(1, 1001, 'L1', '2025-08-14 10:00:00', '2022-ST-101','2020-2021','Génie logiciel');
+
+
+--(2, 1002, 'L2', '2025-08-14 10:05:00', '2022-ST-101','2021-2022','Cybersécurité'),
+--(3, 1003, 'L3', '2025-08-14 10:10:00', '2022-ST-102','2022-2023','Genie logiciel');
