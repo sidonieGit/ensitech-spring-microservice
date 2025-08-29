@@ -29,8 +29,6 @@ spring:
           predicates:
             - Path=/api/courses/**
 
-
-
         # Route pour authentication-service
         - id: authentication-service-route
           # uri:  http://localhost:8083
@@ -43,6 +41,18 @@ spring:
           uri: lb://training-service
           predicates:
             - Path=/api/training/**
+
+        #Route pour registration-service
+        - id: registration-service-route
+          uri: lb://registration-service
+          predicates:
+            - Path=/api/registrations/**
+
+        #Route pour academic-service
+        - id: academic-service-route
+          uri: lb://academic-service
+          predicates:
+            - Path=/api/academic-year/**
 
 
   
