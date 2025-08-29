@@ -25,7 +25,6 @@ public class Registration {
 
     private LocalDateTime dateOfRegistration;
 
-    @Column(unique = true)
     private String matricule;
 
     private String specialityLabel;
