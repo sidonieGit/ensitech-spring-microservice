@@ -28,10 +28,8 @@ public class Registration {
     @Column(unique = true)
     private String matricule;
 
-    @Column(unique = true)
     private String specialityLabel;
 
-    @Column(unique = true)
     @Pattern(regexp = "^2[0-9]{3}-2[0-9]{3}$", message = "Format du label de l'année academique invalide")
     private String academicYearLabel;
 
