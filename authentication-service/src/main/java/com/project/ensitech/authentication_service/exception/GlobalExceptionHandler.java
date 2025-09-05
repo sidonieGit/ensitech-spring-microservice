@@ -28,6 +28,7 @@ public class GlobalExceptionHandler {
         responseBody.put("message", "Validation failed");
         responseBody.put("errors", fieldErrors);
 
+        log.warn("Validation Exception: {}", fieldErrors); // Log plus détaillé
         return new ResponseEntity<>(responseBody, HttpStatus.BAD_REQUEST);
     }
 
@@ -43,11 +44,20 @@ public class GlobalExceptionHandler {
         log.error("UnauthorizedException: {}", ex.getMessage());
         return new ResponseEntity<>(Map.of("error", ex.getMessage()), HttpStatus.UNAUTHORIZED);
     }*/
+
+    @ExceptionHandler(RuntimeException.class) // Attraper vos RuntimeException spécifiques
+    public ResponseEntity<Map<String, String>> handleRuntimeException(RuntimeException ex) {
+        log.warn("Runtime Exception: {}", ex.getMessage());
+        // Vous pouvez ajouter des conditions ici si certaines RuntimeException doivent avoir des codes spécifiques
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST) // Ou HttpStatus.CONFLICT, etc. selon le cas
+                .body(Map.of("error", ex.getMessage()));
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Map<String, String>> handleException(Exception ex) {
         log.error("Unhandled Exception: ", ex.getMessage());
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(Map.of("error",  ex.getMessage()));
+                .body(Map.of("error",  "Une erreur interne du serveur est survenue."));// Message générique pour l'utilisateur
     }
 
 }

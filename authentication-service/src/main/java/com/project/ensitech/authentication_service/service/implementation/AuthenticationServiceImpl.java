@@ -45,13 +45,18 @@ public class AuthenticationServiceImpl implements IAuthenticationService {
 
     @Override
     public AuthenticationResponseDto login(LoginRequestDto request) {
-
+        try {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.getEmail(),
                         request.getPassword()
                 )
         );
+        } catch (org.springframework.security.authentication.BadCredentialsException e) {
+            // Cette exception est levée quand email/password est incorrect
+            throw new RuntimeException("Identifiant ou mot de passe incorrect.");
+        }
+
         var user = userRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new UsernameNotFoundException("Email incorrect"));
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
