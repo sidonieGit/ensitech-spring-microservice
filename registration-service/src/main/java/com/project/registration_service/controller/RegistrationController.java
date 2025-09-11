@@ -1,5 +1,6 @@
 package com.project.registration_service.controller;
 
+import com.project.registration_service.domain.Registration;
 import com.project.registration_service.dto.*;
 import com.project.registration_service.service.RegistrationService;
 import org.springframework.http.HttpStatus;
@@ -66,6 +67,13 @@ public class RegistrationController {
     public ResponseEntity<List<RegDTO>> getRegByMatricule(@Validated @PathVariable String matricule){
         return ResponseEntity.ok(this.registrationService.getRegistrationListByMatricule(matricule));
     }
+
+    @GetMapping("/by-speciality/{specialityLabel}")
+    public ResponseEntity<List<RegDTO>> getRegistrationsBySpec(@Validated @PathVariable String specialityLabel){
+        return ResponseEntity.ok(this.registrationService.getRegistrationsBySpecialityLabel(specialityLabel));
+    }
+
+
 
 //    @PostMapping
 //    public ResponseEntity<RegistrationStudentDTO> create(@RequestBody CreateRegistrationDTO dto) {

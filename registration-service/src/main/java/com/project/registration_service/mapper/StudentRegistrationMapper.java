@@ -57,6 +57,7 @@ public class StudentRegistrationMapper {
             return null;
         return new UpdateRegDTO(
                 entity.getMatricule(),
+                entity.getSpecialityLabel(),
                 entity.getLevel()
 
         );
@@ -99,6 +100,17 @@ public class StudentRegistrationMapper {
                 .map(StudentRegistrationMapper::toDtoR).
                 collect(Collectors.toList());
 
+    }
+
+    private static StudentDTO toStudentDTO(Student student) {
+        return new StudentDTO(
+                student.getId(),
+                student.getFirstName(),
+                student.getLastName(),
+                student.getEmail(),
+                student.getBirthday(),
+                student.getGender()
+        );
     }
 
 }

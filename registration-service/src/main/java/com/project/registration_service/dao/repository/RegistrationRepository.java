@@ -13,7 +13,7 @@ import java.util.Optional;
 public interface RegistrationRepository extends JpaRepository<Registration , Long> {
     boolean existsByRegistrationNumber(Long number);
     List<Registration> findByMatricule(String matricule);
-    
+    List<Registration> findAllBySpecialityLabel(String label);
     Optional<Registration> findByMatriculeAndAcademicYearLabel(String matricule, String label);
     List<Registration> findByAcademicYearLabel(String academicYearLabel);
 }

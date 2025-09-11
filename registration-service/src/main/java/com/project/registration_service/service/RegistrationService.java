@@ -1,5 +1,6 @@
 package com.project.registration_service.service;
 
+import com.project.registration_service.domain.Registration;
 import com.project.registration_service.dto.*;
 
 import java.util.List;
@@ -19,5 +20,6 @@ public interface RegistrationService {
     List<RegDTO> getRegistrationListByMatricule(String matricule);
     List<RegDTO> getAllRegs();
     List<RegDTO> getRegistrationsByLabel(String label);
+    List<RegDTO> getRegistrationsBySpecialityLabel(String label);
 
 }
