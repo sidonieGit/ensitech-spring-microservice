@@ -10,6 +10,7 @@ import com.project.registration_service.feign.StudentRestClient;
 import com.project.registration_service.mapper.RegistrationMapper;
 import com.project.registration_service.mapper.StudentRegistrationMapper;
 import com.project.registration_service.model.AcademicYear;
+import com.project.registration_service.model.Speciality;
 import com.project.registration_service.model.Student;
 import jakarta.persistence.EntityManager;
 import jakarta.ws.rs.NotFoundException;
@@ -98,19 +99,36 @@ public class RegistrationServiceImpl implements RegistrationService{
     public RegDTO updateRegs(Long id, UpdateRegDTO updateRegDTO) {
 
         Registration existingRegistration = this.registrationRepository.findById(id)
-                .orElseThrow(()-> new RuntimeException("Registration Already exists!"));
+                .orElseThrow(()-> new RuntimeException("Registration does not exists!"));
 
         existingRegistration.setLevel(updateRegDTO.level());
-//        existingRegistration.setRegistrationNumber(updateRegDTO.registrationNumber());
-        if (updateRegDTO.matricule() != null && !updateRegDTO.matricule().equals(existingRegistration.getMatricule())) {
-            // Le matricule a été modifié dans le DTO, on doit valider le nouveau
+//        && !updateRegDTO.matricule().equals(existingRegistration.getMatricule()
+        if (updateRegDTO.matricule() != null) {
             Student student = this.studentRestClient.getStudentByMatricule(updateRegDTO.matricule());
             if (student == null) {
                 throw new IllegalArgumentException("Le matricule fourni pour la mise à jour n'existe pas.");
             }
             existingRegistration.setMatricule(updateRegDTO.matricule());
+            existingRegistration.setStudent(student);
+            log.info("Student chargé : {} {}", student.getFirstName(), student.getLastName());
         }
+
+        if(updateRegDTO.specialityLabel() != null ){
+            Speciality speciality = this.specialityRestClient.getSpecialityByLabel(updateRegDTO.specialityLabel());
+            log.info(updateRegDTO.toString(), speciality.toString());
+            if(speciality == null){
+                throw new IllegalArgumentException("Cette specialité n'existe pas");
+            }
+            existingRegistration.setSpecialityLabel(updateRegDTO.specialityLabel());
+            log.info("Speciality mise à jour : {}", speciality.getLabel());
+
+
+        }
+
         Registration registration = this.registrationRepository.save(existingRegistration);
+
+        // Réinjections de student car JPA ne persiste pas ce champ
+        registration.setStudent(existingRegistration.getStudent());
         return StudentRegistrationMapper.toDtoR(registration);
     }
 
@@ -196,6 +214,12 @@ public class RegistrationServiceImpl implements RegistrationService{
         List<Registration> registrations = this.registrationRepository.findAll();
         return  StudentRegistrationMapper.toRegDTOList(registrations);
     }
+
+    @Override
+    public List<RegDTO> getRegistrationsBySpecialityLabel(String label) {
+        return StudentRegistrationMapper.toRegDTOList(this.registrationRepository.findAllBySpecialityLabel(label));
+    }
+
     @Override
     public List<RegDTO> getRegistrationsByLabel(String label) {
         List<Registration> registrations = this.registrationRepository.findByAcademicYearLabel(label);
