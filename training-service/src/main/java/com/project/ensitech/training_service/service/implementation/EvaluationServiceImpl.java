@@ -37,7 +37,7 @@ public class EvaluationServiceImpl implements IEvaluationService {
 
         // Check if course exists
         Course course = courseRepository.findById(request.getCourseId())
-                .orElseThrow(() -> new EntityNotFoundException("Course not found: " + request.getCourseId()));
+                .orElseThrow(() -> new EntityNotFoundException("Cours non trouvé: " + request.getCourseId()));
 
         assertStudentExists(request.getStudentId());
 

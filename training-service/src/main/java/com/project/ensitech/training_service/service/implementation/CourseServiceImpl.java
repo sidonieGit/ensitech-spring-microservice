@@ -61,9 +61,19 @@ public class CourseServiceImpl implements ICourseService {
         // Fetch teacher details from user-service
         UserDto teacherDto = null;
         if(course.getTeacherId()!=null) {
-            teacherDto = teacherClient.getTeacher(course.getTeacherId());
+            try {
+                teacherDto = teacherClient.getTeacher(course.getTeacherId());
+                courseDto.setTeacher(teacherDto);
+            } catch (FeignException.NotFound e) {
+                // If teacher is not found, teacherId is null
+                log.warn("Enseignant non trouvé avec l'ID {} pour le cours '{}'. L'enrichissement sera ignoré.",
+                        course.getTeacherId(), course.getTitle());
+                // On peut laisser dto.setTeacher(null), ou mettre un objet par défaut.
+                // Dans ce cas, l'enseignant sera toujours null, mais cela n'a pas d'impact.
+                // Le DTO du cours sera quand même retourné, mais sans les infos de l'enseignant.
+            }
         }
-        courseDto.setTeacher(teacherDto);
+
         return courseDto;
     }
 
@@ -116,16 +126,40 @@ public class CourseServiceImpl implements ICourseService {
                 .map(courseMapper::toDto)
                 .collect(Collectors.toList());*/
 
+//        return courseRepository.findAll().stream()
+//                .map(course -> {
+//                    CourseDto dto = courseMapper.toDto(course);
+//                    UserDto teacherDto = null;
+//                    // Fetch teacher details from User Service
+//                    if(course.getTeacherId()!= null) {
+//                         teacherDto = teacherClient.getTeacher(course.getTeacherId());
+//                    }
+//                    dto.setTeacher(teacherDto);
+//
+//
+//                    return dto;
+//                })
+//                .collect(Collectors.toList());
+
         return courseRepository.findAll().stream()
                 .map(course -> {
                     CourseDto dto = courseMapper.toDto(course);
-                    UserDto teacherDto = null;
-                    // Fetch teacher details from User Service
-                    if(course.getTeacherId()!= null) {
-                         teacherDto = teacherClient.getTeacher(course.getTeacherId());
-                    }
-                    dto.setTeacher(teacherDto);
 
+                    if (course.getTeacherId() != null) {
+                        try {
+                            // On tente de récupérer les détails de l'enseignant
+                            UserDto teacherDto = teacherClient.getTeacher(course.getTeacherId());
+                            dto.setTeacher(teacherDto);
+                        } catch (FeignException.NotFound e) {
+                            // SI L'ENSEIGNANT N'EST PAS TROUVÉ :
+                            // On logue un avertissement, mais on ne fait PAS planter la requête.
+                            log.warn("Enseignant non trouvé avec l'ID {} pour le cours '{}'. L'enrichissement sera ignoré.",
+                                    course.getTeacherId(), course.getTitle());
+                            // On peut laisser dto.setTeacher(null), ou mettre un objet par défaut.
+                            // Dans ce cas, l'enseignant sera toujours null, mais cela n'a pas d'impact.
+                            // Le DTO du cours sera quand même retourné, mais sans les infos de l'enseignant.
+                        }
+                    }
                     return dto;
                 })
                 .collect(Collectors.toList());
@@ -156,4 +190,35 @@ public class CourseServiceImpl implements ICourseService {
         try { teacherClient.getTeacher(id); }
         catch (FeignException.NotFound e) { throw new IllegalArgumentException("Teacher "+id+" not found"); }
     }
+
+    // ... (code existant) ...
+
+    /**
+     * Assigne un seul enseignant à un seul cours.
+     * @param courseId L'ID du cours à modifier.
+     * @param teacherId L'ID de l'enseignant à assigner.
+     */
+    @Transactional
+    @Override
+    public void assignTeacherToCourse(Long courseId, Long teacherId) {
+        // 1. Valider que l'enseignant existe (Fail-Fast)
+        validateTeacherExists(teacherId);
+
+        // 2. Trouver le cours
+        Course course = courseRepository.findById(courseId)
+                .orElseThrow(() -> new ResourceNotFoundException("Course", "id", courseId));
+
+        // 3. Assigner l'enseignant et sauvegarder
+        log.info("Assignation de l'enseignant ID {} au cours ID {}", teacherId, courseId);
+        course.setTeacherId(teacherId);
+        courseRepository.save(course);
+    }
+
+    private void validateTeacherExists(Long teacherId) {
+        try { teacherClient.getTeacher(teacherId); }
+        catch (FeignException.NotFound e) { throw new IllegalArgumentException("Teacher avec l'identifiant  "+teacherId+"non trouvé"); }
+    }
+
+
+
 }
