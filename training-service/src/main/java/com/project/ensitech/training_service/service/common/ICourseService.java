@@ -2,6 +2,7 @@ package com.project.ensitech.training_service.service.common;
 
 import com.project.ensitech.training_service.model.dto.courseDto.CourseDto;
 import com.project.ensitech.training_service.model.dto.courseDto.CreateCourseDto;
+import jakarta.transaction.Transactional;
 
 import java.util.List;
 
@@ -13,4 +14,7 @@ public interface ICourseService {
     List<CourseDto> searchByTitle(String title);
     List<CourseDto> getAllCourses();
     List<CourseDto> getAllCoursesByTeacher(Long id);
+
+    @Transactional
+    void assignTeacherToCourse(Long courseId, Long teacherId);
 }

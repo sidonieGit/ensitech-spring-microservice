@@ -64,4 +64,12 @@ public class CourseController {
         // return ResponseEntity.noContent().build();
         return ResponseEntity.ok(iCourseService.searchByTitle(title));
     }
+
+    @PatchMapping("/{courseId}/assign-teacher/{teacherId}")
+    public ResponseEntity<Void> assignTeacher(
+            @PathVariable Long courseId,
+            @PathVariable Long teacherId) {
+        iCourseService.assignTeacherToCourse(courseId, teacherId);
+        return ResponseEntity.ok().build();
+    }
 }
