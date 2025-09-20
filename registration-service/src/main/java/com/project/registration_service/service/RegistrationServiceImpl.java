@@ -221,6 +221,31 @@ public class RegistrationServiceImpl implements RegistrationService{
     }
 
     @Override
+    public RegDTO getLatestRegistrationByMatricule(String matricule) {
+        // 1. Valider et récupérer l'étudiant d'abord (Fail-Fast)
+        Student student = studentRestClient.getStudentByMatricule(matricule);
+        if (student == null) {
+            throw new NotFoundException("Aucun étudiant trouvé avec le matricule : " + matricule);
+        }
+
+        // 2. Chercher la dernière inscription
+        Optional<Registration> latestRegistrationOptional = registrationRepository.findTopByMatriculeOrderByDateOfRegistrationDesc(matricule);
+
+        // 3. Vérifier explicitement si l'Optional est vide
+        if (latestRegistrationOptional.isEmpty()) {
+            throw new NotFoundException("Aucune inscription trouvée pour le matricule : " + matricule);
+        }
+
+        // 4. Si on arrive ici, l'inscription existe. On la récupère.
+        Registration latestRegistration = latestRegistrationOptional.get();
+
+        // 5. On enrichit l'entité avec l'objet Student déjà récupéré
+        latestRegistration.setStudent(student);
+
+        // 6. On retourne le DTO
+        return StudentRegistrationMapper.toDtoR(latestRegistration);
+    }
+    @Override
     public List<RegDTO> getRegistrationsByLabel(String label) {
         List<Registration> registrations = this.registrationRepository.findByAcademicYearLabel(label);
         return  StudentRegistrationMapper.toRegDTOList(registrations);
@@ -232,4 +257,5 @@ public class RegistrationServiceImpl implements RegistrationService{
         // Utilisez Optional.map() pour un mappage conditionnel et sûr
         return registrationOptional.map(StudentRegistrationMapper::toDtoR).orElse(null);
     }
+
 }
