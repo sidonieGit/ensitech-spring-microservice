@@ -16,4 +16,7 @@ public interface RegistrationRepository extends JpaRepository<Registration , Lon
     List<Registration> findAllBySpecialityLabel(String label);
     Optional<Registration> findByMatriculeAndAcademicYearLabel(String matricule, String label);
     List<Registration> findByAcademicYearLabel(String academicYearLabel);
+    Registration findTopByOrderByRegistrationNumberDesc();
+    Registration findTopByAcademicYearLabelOrderByRegistrationNumberDesc(String academicYearLabel);
+
 }

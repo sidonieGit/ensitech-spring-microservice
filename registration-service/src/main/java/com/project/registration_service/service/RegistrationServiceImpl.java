@@ -17,6 +17,7 @@ import jakarta.ws.rs.NotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.DateTimeException;
 import java.time.LocalDate;
@@ -144,6 +145,7 @@ public class RegistrationServiceImpl implements RegistrationService{
     }
 
     @Override
+    @Transactional
     public RegDTO processRegistration(CreateRegistrationDTO createRegistrationDTO) {
 
         // Check 1: Fetch student, academic year and speciality
@@ -187,9 +189,15 @@ public class RegistrationServiceImpl implements RegistrationService{
         registration.setDateOfRegistration(LocalDateTime.now());
 
         // Check 5 : registration number does not exist
+
         if(registration.getRegistrationNumber() == null){
-            Long nextRegNumber = (Long) entityManager.createNativeQuery("SELECT NEXTVAL('registration_number_seq')").getSingleResult();
-            registration.setRegistrationNumber(nextRegNumber);
+//            Long nextRegNumber = (Long) entityManager.createNativeQuery("SELECT NEXTVAL('registration_number_seq')").getSingleResult();
+//            registration.setRegistrationNumber(nextRegNumber);
+            Long lastNumber = registrationRepository.findTopByOrderByRegistrationNumberDesc() != null
+                    ? registrationRepository.findTopByOrderByRegistrationNumberDesc().getRegistrationNumber()
+                    : 0L;
+
+            registration.setRegistrationNumber(lastNumber+1);
         }
         // Persist and flush
         this.registrationRepository.save(registration);
