@@ -1,4 +1,4 @@
-CREATE TABLE academic_year (
+CREATE TABLE IF NOT EXISTS academic_year (
     id INT PRIMARY KEY AUTO_INCREMENT,
     label VARCHAR(50) NOT NULL,
     start_date DATE NOT NULL,
@@ -7,7 +7,7 @@ CREATE TABLE academic_year (
     created_at TIMESTAMP,
     updated_at TIMESTAMP
 );
-CREATE TABLE period (
+CREATE TABLE IF NOT EXISTS period  (
     id INT PRIMARY KEY AUTO_INCREMENT,
     entitled VARCHAR(100) NOT NULL,
     started_at DATE,

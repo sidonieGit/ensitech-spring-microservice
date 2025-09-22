@@ -22,4 +22,7 @@ public interface AcademicYearRepository extends JpaRepository<AcademicYear, Inte
 
     @Query("SELECT ay FROM AcademicYear ay JOIN FETCH ay.periods WHERE ay.label = :label")
     Optional<AcademicYear> findAcademicYearByLabel(String label);
+
+//    @Query("SELECT ay FROM AcademicYear ay JOIN FETCH ay.periods WHERE ay.label = :label AND ay.status ='EN_COURS'")
+//    Optional<AcademicYear> findLastAcademicYearByLabelWithStateInProgress();
 }
