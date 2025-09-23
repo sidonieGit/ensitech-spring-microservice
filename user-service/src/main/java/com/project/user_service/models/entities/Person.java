@@ -31,6 +31,12 @@ public abstract class Person implements Serializable {
     @Column(unique = true, nullable = false) // Un email doit être unique et non nul
     private String email;
 
+    @Column(nullable = true) // Le mot de passe peut être NULL dans la BDD
+    private String password;
+
+    @Column(unique = true, nullable = true) // <-- RENDEZ-LE NULLABLE
+    private String matricule;
+
     private String address;
     private String telephone;
 
