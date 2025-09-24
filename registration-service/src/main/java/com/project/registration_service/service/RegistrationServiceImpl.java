@@ -45,7 +45,6 @@ public class RegistrationServiceImpl implements RegistrationService{
         this.specialityRestClient = specialityRestClient;
     }
 
-
     @Override
     public RegistrationDTO getRegistration(Long id) {
         Optional<Registration> registration = registrationRepository.findById(id);
@@ -61,6 +60,11 @@ public class RegistrationServiceImpl implements RegistrationService{
     public RegDTO getById(Long id) {
        return this.registrationRepository.findById(id)
                .map(StudentRegistrationMapper::toDtoR)
+               .orElseThrow(()-> new NoSuchElementException("There nothing about"+ id));
+    }
+
+    public Registration getPlainRegById(Long id) {
+       return this.registrationRepository.findById(id)
                .orElseThrow(()-> new NoSuchElementException("There nothing about"+ id));
     }
 
@@ -240,4 +244,5 @@ public class RegistrationServiceImpl implements RegistrationService{
         // Utilisez Optional.map() pour un mappage conditionnel et sûr
         return registrationOptional.map(StudentRegistrationMapper::toDtoR).orElse(null);
     }
+
 }

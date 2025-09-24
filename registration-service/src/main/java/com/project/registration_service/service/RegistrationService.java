@@ -6,6 +6,7 @@ import com.project.registration_service.dto.*;
 import java.util.List;
 
 public interface RegistrationService {
+    Registration getPlainRegById(Long id);
     RegistrationDTO getRegistration(Long id);
     List<RegistrationDTO> getAllRegistrations();
     RegistrationDTO createRegistration(RegistrationDTO registrationDTO);
