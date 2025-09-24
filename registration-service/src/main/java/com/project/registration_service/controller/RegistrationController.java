@@ -78,7 +78,16 @@ public class RegistrationController {
         return ResponseEntity.ok(this.registrationService.getRegistrationsBySpecialityLabel(specialityLabel));
     }
 
-
+    /**
+     * Récupère la dernière inscription (la plus récente) pour un étudiant donné.
+     * @param matricule Le matricule de l'étudiant.
+     * @return La dernière inscription ou 404 si aucune n'est trouvée.
+     */
+    @GetMapping("/by-student/{matricule}/latest")
+    public ResponseEntity<RegDTO> getLatestRegistrationByMatricule(@PathVariable String matricule) {
+        RegDTO latestRegistration = registrationService.getLatestRegistrationByMatricule(matricule);
+        return ResponseEntity.ok(latestRegistration);
+    }
 
 //    @PostMapping
 //    public ResponseEntity<RegistrationStudentDTO> create(@RequestBody CreateRegistrationDTO dto) {

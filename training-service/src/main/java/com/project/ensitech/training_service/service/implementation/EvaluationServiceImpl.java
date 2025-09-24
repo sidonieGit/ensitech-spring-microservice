@@ -16,6 +16,7 @@ import feign.FeignException;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -23,6 +24,7 @@ import java.util.stream.Collectors;
 @Service
 @Transactional
 @RequiredArgsConstructor
+@Slf4j
 public class EvaluationServiceImpl implements IEvaluationService {
 
     private final EvaluationRepository evaluationRepository;
@@ -128,9 +130,11 @@ public class EvaluationServiceImpl implements IEvaluationService {
                 .map(course -> {
                     EvaluationDto dto = evaluationMapper.toDto(course);
 
-                    // Fetch teacher details from User Service
+                    /*// Fetch teacher details from User Service
                     UserDto student = studentClient.getStudent(dto.getStudentId());
-                    dto.setStudent(student);
+                    dto.setStudent(student);*/
+                    // --- RENDRE L'ENRICHISSEMENT ROBUSTE ---
+                    enrichDtoWithStudent(dto, course.getStudentId());
 
                     return dto;
                 })
@@ -155,6 +159,28 @@ public class EvaluationServiceImpl implements IEvaluationService {
         try { studentClient.getStudent(id); }
         catch (FeignException.NotFound e) { throw new EntityNotFoundException("Student "+id+" not found"); }
         // catch (FeignException.NotFound e) { throw new IllegalArgumentException("Student "+id+" not found"); }
+    }
+
+    /**
+     * Méthode privée pour enrichir un DTO d'évaluation avec les détails de l'étudiant.
+     * Gère les cas où l'étudiant n'est pas trouvé sans faire échouer la requête.
+     */
+    private void enrichDtoWithStudent(EvaluationDto dto, Long studentId) {
+        if (studentId != null) {
+            try {
+                UserDto student = studentClient.getStudent(studentId);
+                dto.setStudent(student);
+            } catch (FeignException.NotFound e) {
+                // Cas normal : l'étudiant a été supprimé mais l'évaluation existe toujours.
+                log.warn("Étudiant non trouvé avec l'ID {} pour l'évaluation ID {}. L'enrichissement sera ignoré.",
+                        studentId, dto.getId());
+                // On ne fait rien, le champ 'student' du DTO restera null.
+            } catch (Exception e) {
+                // Vraie erreur (ex: user-service indisponible)
+                log.error("Impossible de récupérer les détails de l'étudiant ID {} pour l'évaluation ID {}.",
+                        studentId, dto.getId(), e);
+            }
+        }
     }
 }
 

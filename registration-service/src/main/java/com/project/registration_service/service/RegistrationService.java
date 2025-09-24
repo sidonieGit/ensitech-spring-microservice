@@ -23,4 +23,5 @@ public interface RegistrationService {
     List<RegDTO> getRegistrationsByLabel(String label);
     List<RegDTO> getRegistrationsBySpecialityLabel(String label);
 
+    RegDTO getLatestRegistrationByMatricule(String matricule);
 }

@@ -16,13 +16,11 @@ import static com.fasterxml.jackson.annotation.JsonProperty.Access.READ_ONLY;
 
 @Entity
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
 @EqualsAndHashCode(callSuper = true, exclude = "courses") // Exclure la collection pour éviter les boucles infinies
 @DiscriminatorValue("STUDENT")
 public class Student extends Person {
 
-    @Column(nullable = false, unique = true) // Le matricule doit être unique
-    private String matricule;
+//    @Column(nullable = false, unique = true) // Le matricule doit être unique
+//    private String matricule;
 
 }

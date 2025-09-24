@@ -38,3 +38,5 @@ docker/mysql
 application-*.properties
 application-*.yml
 application-*.yaml
+
+./config-repo/
