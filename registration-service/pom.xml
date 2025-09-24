@@ -84,19 +84,33 @@
 			<version>5.2.2</version>
 		</dependency>
 
-		<!--For mockito -->
-<!--		<dependency>-->
-<!--			<groupId>net.bytebuddy</groupId>-->
-<!--			<artifactId>byte-buddy</artifactId>-->
-<!--			<version>1.17.7</version>-->
-<!--		</dependency>-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-thymeleaf</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.openhtmltopdf</groupId>
+			<artifactId>openhtmltopdf-pdfbox</artifactId>
+			<version>1.0.10</version>
+		</dependency>
+		<dependency>
+			<groupId>com.openhtmltopdf</groupId>
+			<artifactId>openhtmltopdf-slf4j</artifactId>
+			<version>1.0.10</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.zxing</groupId>
+			<artifactId>core</artifactId>
+			<version>3.5.3</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.zxing</groupId>
+			<artifactId>javase</artifactId>
+			<version>3.5.3</version>
+		</dependency>
 
-<!--		<dependency>-->
-<!--			<groupId>net.bytebuddy</groupId>-->
-<!--			<artifactId>byte-buddy-agent</artifactId>-->
-<!--			<version>1.17.7</version>-->
-<!--			<scope>test</scope>-->
-<!--		</dependency>-->
+		<!--For mockito -->
+
 	</dependencies>
 
 	<build>

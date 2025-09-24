@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <style>
+        body { font-family: "Arial", sans-serif; margin: 40px; }
+        .header { text-align: center; margin-bottom: 30px; }
+        .header h1 { color: #2c3e50; margin: 0; }
+        .info-box {
+          border: 1px solid #ddd;
+          padding: 20px;
+          border-radius: 8px;
+          background: #f9f9f9;
+        }
+        .info-box h2 { margin-top: 0; color: #2980b9; }
+        .footer {
+          margin-top: 50px;
+          font-size: 12px;
+          text-align: center;
+          color: gray;
+        }
+    </style>
+</head>
+<body>
+<div class="header">
+    <h1>Attestation D'inscription</h1>
+    <p>Année academique: <span th:text="${registration.academicYearLabel}"></span></p>
+</div>
+
+<div class="info-box">
+    <!--    <h2 th:text="${student != null ? student.firstname  : 'Unknown Student'}"></h2>-->
+    <h2 th:text="${(student?.firstName + ' ' + student?.lastName) ?: 'Unknown Student'}"></h2>
+    <p><b>N° inscription:</b> <span th:text="${registration.registrationNumber}"></span></p>
+    <p><b>Matricule:</b> <span th:text="${registration.matricule}"></span></p>
+    <p><b>Niveau:</b> <span th:text="${registration.level}"></span></p>
+    <p><b>Specialité:</b> <span th:text="${registration.specialityLabel}"></span></p>
+    <p><b>Date d'inscription:</b>
+        <span th:text="${#temporals.format(registration.dateOfRegistration, 'dd-MM-yyyy HH:mm')}"></span>
+    </p>
+</div>
+
+
+
+<div class="footer">
+    &#169; ENSITECH ETS - Generated on <span th:text="${today}"></span>
+</div>
+</body>
+</html>
