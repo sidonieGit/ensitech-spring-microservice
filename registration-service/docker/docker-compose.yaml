@@ -4,7 +4,7 @@
       image: service-registration
       build:
         context: ..
-        dockerfile: Dockerfile
+        dockerfile: ../OldDockerfile
       ports:
         - "8086:8086"
       depends_on:
