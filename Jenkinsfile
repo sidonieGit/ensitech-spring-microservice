@@ -150,6 +150,9 @@ pipeline {
       // Jenkins secret
           DB_URL_AUTH    = credentials('DB_URL_AUTH')
           DB_URL_TRAINING= credentials('DB_URL_TRAINING')
+          DB_URL_ACADEMIC= credentials('DB_URL_ACADEMIC')
+          DB_URL_REGISTRATION= credentials('DB_URL_REGISTRATION')
+          DB_URL_USER= credentials('DB_URL_USER')
           DB_USERNAME    = credentials('DB_USERNAME')
           DB_PASSWORD    = credentials('DB_PASSWORD')
           JWT_SECRET_KEY = credentials('JWT_SECRET_KEY')
@@ -175,6 +178,9 @@ pipeline {
                       --arg GATEWAY_IMAGE "${env.GATEWAY_IMAGE}" \\
                       --arg DB_URL_AUTH "\$DB_URL_AUTH" \\
                       --arg DB_URL_TRAINING "\$DB_URL_TRAINING" \\
+                      --arg DB_URL_ACADEMIC "\$DB_URL_ACADEMIC" \\
+                      --arg DB_URL_REGISTRATION "\$DB_URL_REGISTRATION" \\
+                      --arg DB_URL_USER "\$DB_URL_USER" \\
                       --arg DB_USERNAME "\$DB_USERNAME" \\
                       --arg DB_PASSWORD "\$DB_PASSWORD" \\
                       --arg JWT_SECRET_KEY "\$JWT_SECRET_KEY" \\
@@ -184,23 +190,41 @@ pipeline {
                           if .name == "ensitech-container-authentication" then
                               .image = \$AUTH_IMAGE
                               | .environment = ((.environment // []) + [
-                                  { "name": "DB_URL", "value": \$DB_URL_AUTH },
+                                  { "name": "DB_URL_AUTH", "value": \$DB_URL_AUTH },
                                   { "name": "DB_USERNAME", "value": \$DB_USERNAME },
                                   { "name": "DB_PASSWORD", "value": \$DB_PASSWORD },
                                   { "name": "JWT_SECRET_KEY", "value": \$JWT_SECRET_KEY }
                               ])
                           elif .name == "ensitech-container-discovery" then .image = \$DISCOVERY_IMAGE
                           elif .name == "ensitech-container-config" then .image = \$CONFIG_IMAGE
-                          elif .name == "ensitech-container-academic" then .image = \$ACADEMIC_IMAGE
-                          elif .name == "ensitech-container-registration" then .image = \$REGISTRATION_IMAGE
+                          elif .name == "ensitech-container-academic" then
+                            .image = \$ACADEMIC_IMAGE
+                             | .environment = ((.environment // []) + [
+                              { "name": "MYSQL_ACY_DB", "value": \$DB_URL_ACADEMIC },
+                              { "name": "DB_USERNAME", "value": \$DB_USERNAME },
+                              { "name": "DB_PASSWORD", "value": \$DB_PASSWORD }
+                          ])
+                          elif .name == "ensitech-container-registration" then
+                            .image = \$REGISTRATION_IMAGE
+                             | .environment = ((.environment // []) + [
+                              { "name": "MYSQL_REG_DB", "value": \$DB_URL_REGISTRATION },
+                              { "name": "DB_USERNAME", "value": \$DB_USERNAME },
+                              { "name": "DB_PASSWORD", "value": \$DB_PASSWORD }
+                           ])
                           elif .name == "ensitech-container-training" then
                             .image = \$TRAINING_IMAGE
                              | .environment = ((.environment // []) + [
-                                  { "name": "DB_URL", "value": \$DB_URL_TRAINING },
+                                  { "name": "DB_URL_TRAINING", "value": \$DB_URL_TRAINING },
                                   { "name": "DB_USERNAME", "value": \$DB_USERNAME },
                                   { "name": "DB_PASSWORD", "value": \$DB_PASSWORD }
                               ])
-                          elif .name == "ensitech-container-user" then .image = \$USER_IMAGE
+                          elif .name == "ensitech-container-user" then
+                            .image = \$USER_IMAGE
+                             | .environment = ((.environment // []) + [
+                                  { "name": "MYSQL_DB_USER", "value": \$DB_URL_USER },
+                                  { "name": "DB_USERNAME", "value": \$DB_USERNAME },
+                                  { "name": "DB_PASSWORD", "value": \$DB_PASSWORD }
+                              ])
                           elif .name == "ensitech-container-gateway" then
                             .image = \$GATEWAY_IMAGE
                              | .environment = ((.environment // []) + [

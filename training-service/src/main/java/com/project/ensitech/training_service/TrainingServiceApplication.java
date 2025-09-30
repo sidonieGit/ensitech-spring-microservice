@@ -29,7 +29,7 @@ public class TrainingServiceApplication {
 			Dotenv dotenv = Dotenv.load();
 
 			// dbUrl = Objects.requireNonNull(dotenv.get("DB_URL"));
-			dbUrl = Objects.requireNonNull(dotenv.get("DB_URL"));
+			dbUrl = Objects.requireNonNull(dotenv.get("DB_URL_TRAINING"));
 			dbUsername = Objects.requireNonNull(dotenv.get("DB_USERNAME"));
 			dbPassword = Objects.requireNonNull(dotenv.get("DB_PASSWORD"));
 
@@ -38,7 +38,7 @@ public class TrainingServiceApplication {
 		} catch (Exception e) {
 			// fallback en cas de souci avec dotenv
 			System.out.println(" Impossible de charger .env, on utilise uniquement System.getenv()");
-			dbUrl = System.getenv("DB_URL");
+			dbUrl = System.getenv("DB_URL_TRAINING");
 			dbUsername = System.getenv("DB_USERNAME");
 			dbPassword = System.getenv("DB_PASSWORD");
 
