@@ -6,7 +6,7 @@ pipeline {
         AWS_ACCOUNT_ID           = '275057777886'
         IMAGE_REPO               = 'ensitech-microservice'
         ECS_CLUSTER              = 'ensitech-cluster1'
-        ECS_SERVICE              = 'ensitech-task-250921b-service-8hrv6uou '
+        ECS_SERVICE              = 'ensitech-task-250921b-service-8hrv6uou'
         TASK_FAMILY              = 'ensitech-task-250921b'
         //JAVA_HOME                = '/opt/java/jdk-21.0.8'
 
