@@ -39,4 +39,17 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ErrorResponseDto> handleValidationExceptions(MethodArgumentNotValidException ex) {
+        String allErrors = ex.getBindingResult().getFieldErrors().stream()
+                .map(error -> error.getField() + " : " + error.getDefaultMessage())
+                .reduce((msg1, msg2) -> msg1 + " | " + msg2)
+                .orElse("Invalid input");
+
+        ErrorResponseDto errorResponse = new ErrorResponseDto("BAD_REQUEST", allErrors);
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
+
+
+
 }

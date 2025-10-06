@@ -10,4 +10,9 @@ import java.util.Optional;
 public interface SpecialityRepository extends JpaRepository<Speciality, Long> {
     Optional<Speciality> findByLabel(String label);
     List<Speciality> findByLabelContainingIgnoreCase(String label);
+    // List<Speciality> findByLabel(String label);
+    // permet de vérifier si le titre est déjà utilisé par une autre spécialité .
+    boolean existsByLabel(String label);
+    //permet de vérifier si le titre est déjà utilisé par une autre spécialité que celui qu’on met à jour.
+    boolean existsByLabelAndIdNot(String label, Long id);
 }

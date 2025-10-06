@@ -20,6 +20,7 @@ public class Course {
     @GeneratedValue
     private Long id;
 
+    @Column(unique = true, nullable = false)
     private String title;
     private int coefficient;
     private int hours;
