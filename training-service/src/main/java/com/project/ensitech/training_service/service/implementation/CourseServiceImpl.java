@@ -39,11 +39,14 @@ public class CourseServiceImpl implements ICourseService {
         UserDto teacher = null;
 
         // Only check teacher if teacherId is not null
-        if (teacherId != null) {
+        //if (teacherId != null) {
             teacher = teacherClient.getTeacher(teacherId); // throws if not found
             if (teacher == null) {
                 throw new ResourceNotFoundException("Teacher", "id", teacherId);
             }
+        //}
+        if (courseRepository.existsByTitle(createCourseDto.getTitle())) {
+            throw new IllegalArgumentException("Un cours avec ce titre existe déjà");
         }
         Course course = courseMapper.toEntity(createCourseDto);
         Course saved = courseRepository.save(course);
@@ -81,7 +84,10 @@ public class CourseServiceImpl implements ICourseService {
     public CourseDto updateCourse( CourseDto courseDto) {
         Course existing = courseRepository.findById(courseDto.getId())
                 .orElseThrow(() -> new ResourceNotFoundException("Course inexistant ", "id", courseDto.getId()));
-
+        // Vérifie si le titre est déjà pris par un autre cours
+        if (courseRepository.existsByTitleAndIdNot(courseDto.getTitle(), courseDto.getId())) {
+            throw new IllegalArgumentException("Un cours avec ce titre existe déjà");
+        }
         // Apply updates
         existing.setTitle(courseDto.getTitle());
         existing.setCoefficient(courseDto.getCoefficient());

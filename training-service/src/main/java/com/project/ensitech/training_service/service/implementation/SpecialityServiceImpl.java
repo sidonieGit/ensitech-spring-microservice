@@ -53,9 +53,11 @@ public class SpecialityServiceImpl implements ISpecialityService {
             speciality.setCourses(new HashSet<>(courses));
         }
 
-       speciality.getCourses().forEach(course -> log.info("Specialité course", course.getId()));
+      // speciality.getCourses().forEach(course -> log.info("Specialité course", course.getId()));
 
-
+        if (specialityRepository.existsByLabel(request.getLabel())) {
+            throw new IllegalArgumentException("Une spécialité avec ce label existe déjà");
+        }
 // Save the entity
         Speciality saved = specialityRepository.save(speciality);
         saved = specialityRepository.findById(saved.getId())
@@ -91,6 +93,11 @@ public class SpecialityServiceImpl implements ISpecialityService {
     public SpecialityDto updateSpeciality(SpecialityDto request) {
         Speciality existing = specialityRepository.findById(request.getId())
                 .orElseThrow(() -> new EntityNotFoundException("Speciality not found: " + request.getId()));
+
+        // Vérifie si le label est déjà pris par une autre spécialité
+        if (specialityRepository.existsByLabelAndIdNot(request.getLabel(), request.getId())) {
+            throw new IllegalArgumentException("Une spécialité avec ce label existe déjà");
+        }
 
         existing.setLabel(request.getLabel());
         existing.setDescription(request.getDescription());
