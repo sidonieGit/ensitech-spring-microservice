@@ -39,12 +39,12 @@ public class CourseServiceImpl implements ICourseService {
         UserDto teacher = null;
 
         // Only check teacher if teacherId is not null
-        //if (teacherId != null) {
+        if (teacherId != null) {
             teacher = teacherClient.getTeacher(teacherId); // throws if not found
             if (teacher == null) {
                 throw new ResourceNotFoundException("Teacher", "id", teacherId);
             }
-        //}
+        }
         if (courseRepository.existsByTitle(createCourseDto.getTitle())) {
             throw new IllegalArgumentException("Un cours avec ce titre existe déjà");
         }

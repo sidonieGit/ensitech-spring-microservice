@@ -1,5 +1,6 @@
 package com.project.ensitech.authentication_service.exception;
 
+import com.project.ensitech.authentication_service.model.dto.ErrorResponseDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -15,7 +16,7 @@ import java.util.Map;
 public class GlobalExceptionHandler {
     private static final Logger log = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
-    @ExceptionHandler(MethodArgumentNotValidException.class)
+   /* @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, Object>> handleValidationExceptions(MethodArgumentNotValidException ex) {
         Map<String, String> fieldErrors = new HashMap<>();
 
@@ -30,7 +31,18 @@ public class GlobalExceptionHandler {
 
         log.warn("Validation Exception: {}", fieldErrors); // Log plus détaillé
         return new ResponseEntity<>(responseBody, HttpStatus.BAD_REQUEST);
-    }
+    }*/
+   @ExceptionHandler(MethodArgumentNotValidException.class)
+   public ResponseEntity<ErrorResponseDto> handleValidationExceptions(MethodArgumentNotValidException ex) {
+       String allErrors = ex.getBindingResult().getFieldErrors().stream()
+               .map(error -> error.getField() + " : " + error.getDefaultMessage())
+               .reduce((msg1, msg2) -> msg1 + " | " + msg2)
+               .orElse("Invalid input");
+
+       ErrorResponseDto errorResponse = new ErrorResponseDto("BAD_REQUEST", allErrors);
+       return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+   }
+
 
 
    /* @ExceptionHandler(BadRequestException.class)
