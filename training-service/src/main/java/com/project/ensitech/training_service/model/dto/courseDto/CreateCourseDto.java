@@ -18,7 +18,7 @@ public class CreateCourseDto {
     private int coefficient;
     @NotNull(message = "Le nombre d'heure est obligatoire")
     private int hours;
-    @NotNull(message = "L'enseignant  est obligatoire")
+    // @NotNull(message = "L'enseignant  est obligatoire")
     private Long teacherId;
     private UserDto teacher;
 
