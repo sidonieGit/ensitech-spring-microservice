@@ -68,8 +68,8 @@ public class PdfService {
 //                "\nInscription N°: " + registration.getRegistrationNumber() +
 //                "\nSpecialité: " + registration.getSpecialityLabel() +
 //                "\nAnnée academique: " + registration.getAcademicYearLabel() ;
-//        String qrData = "http://localhost:8888/api/registrations/"+registration.getId()+"/original-pdf";
-        String qrData = "http://${APP_HOST}:${APP_PORT}/api/registrations/"+registration.getId()+"/original-pdf";
+        String qrData = "http://localhost:8888/api/registrations/"+registration.getId()+"/original-pdf";
+//        String qrData = "http://${APP_HOST}:${APP_PORT}/api/registrations/"+registration.getId()+"/original-pdf";
 
         String qrBase64 = generateQRCodeBase64(qrData, 150, 150);
 

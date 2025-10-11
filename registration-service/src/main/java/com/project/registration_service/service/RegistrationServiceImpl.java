@@ -60,12 +60,12 @@ public class RegistrationServiceImpl implements RegistrationService{
     public RegDTO getById(Long id) {
        return this.registrationRepository.findById(id)
                .map(StudentRegistrationMapper::toDtoR)
-               .orElseThrow(()-> new NoSuchElementException("There nothing about"+ id));
+               .orElseThrow(()-> new NoSuchElementException("There nothing about "+ id));
     }
 
     public Registration getPlainRegById(Long id) {
        return this.registrationRepository.findById(id)
-               .orElseThrow(()-> new NoSuchElementException("There nothing about"+ id));
+               .orElseThrow(()-> new NotFoundException("There nothing about "+ id));
     }
 
 
