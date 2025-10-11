@@ -6,6 +6,7 @@ import com.project.registration_service.model.Student;
 import java.time.LocalDate;
 
 public record RegDTO(
+        Long id,
         Long registrationNumber,
         Level level, // Enum Level sous forme de String
         String matricule,

@@ -31,13 +31,13 @@ pipeline {
             }
         }
 
-        stage('Build') {
+        stage('Build & test') {
             steps {
                 sh '''
                     echo "JAVA_HOME=$JAVA_HOME"
                     java -version
                     chmod +x mvnw
-                    ./mvnw clean package -DskipTests
+                    ./mvnw clean package
                 '''
                 echo 'Création des fichiers JAR réussie.'
             }

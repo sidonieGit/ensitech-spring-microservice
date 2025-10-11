@@ -66,6 +66,7 @@ public class StudentRegistrationMapper {
     public static RegDTO toDtoR(Registration registration){
 
         return new RegDTO(
+                registration.getId(),
                 registration.getRegistrationNumber(),
                 registration.getLevel(),
                 registration.getMatricule(),

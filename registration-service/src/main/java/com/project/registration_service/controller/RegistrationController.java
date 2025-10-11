@@ -45,12 +45,13 @@ public class RegistrationController {
     }*/
 
 
-    @PutMapping("/{id}")
+    @PutMapping("test/{id}")
     public ResponseEntity<RegistrationDTO> update(@PathVariable Long id, @RequestBody RegistrationDTO registrationDTO){
         return ResponseEntity.ok(this.registrationService.updateRegistration(id,registrationDTO));
     }
 
-    @PutMapping("update/{id}")
+    // @PutMapping("update/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<RegDTO> updateReg(@PathVariable Long id, @RequestBody UpdateRegDTO updateRegDTO){
         return ResponseEntity.ok(this.registrationService.updateRegs(id,updateRegDTO));
     }

@@ -95,6 +95,8 @@ public class RegistrationServiceImpl implements RegistrationService{
         existingYear.setRegistrationNumber(registrationDTO.registrationNumber());
         existingYear.setLevel(registrationDTO.level());
 
+
+
         Registration registration = this.registrationRepository.save(existingYear);
 
         return registrationMapper.toDto(registration);
@@ -129,7 +131,7 @@ public class RegistrationServiceImpl implements RegistrationService{
 
 
         }
-
+        System.out.println("*****************Speciality label mise à jour : {} "+ existingRegistration.getSpecialityLabel());
         Registration registration = this.registrationRepository.save(existingRegistration);
 
         // Réinjections de student car JPA ne persiste pas ce champ
