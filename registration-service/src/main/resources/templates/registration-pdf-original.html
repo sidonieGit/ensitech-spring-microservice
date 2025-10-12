@@ -3,32 +3,32 @@
 <head>
     <meta charset="UTF-8"/>
     <style>
-        body { font-family: "Arial", sans-serif; margin: 40px; }
-        .header { text-align: center; margin-bottom: 30px; }
-        .header h1 { color: #2c3e50; margin: 0; }
-        .info-box {
-          border: 1px solid #ddd;
-          padding: 20px;
-          border-radius: 8px;
-          background: #f9f9f9;
-        }
-        .info-box h2 { margin-top: 0; color: #2980b9; }
+        body { font-family: "Arial", sans-serif;}
+        .header { text-align: center; }
+        .header h1 { color: #000; margin: 0; font-weight:bold; text-decoration:underline;}
         .footer {
           margin-top: 50px;
           font-size: 12px;
           text-align: center;
           color: gray;
         }
+        .img{
+             width: 420px;
+            height: 245px;
+        }
+        .navbar{
+            margin:0;
+            text-align: center;
+        }
     </style>
 </head>
 <body>
 
 <div class="navbar">
-    <p>Ensitech logo</p>
-    <img src="" alt="logo"/>
+    <img th:src="${logoPath}" alt="logo" class="img"/>
 </div>
 <div class="header">
-    <h1>Attestation D'inscription</h1>
+    <h1>Attestation d'inscription</h1>
     <p>Année academique: <span th:text="${registration.academicYearLabel}"></span></p>
 </div>
 
