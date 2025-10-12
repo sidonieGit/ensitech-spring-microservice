@@ -10,6 +10,7 @@ import com.project.registration_service.dto.RegDTO;
 import com.project.registration_service.feign.StudentRestClient;
 import com.project.registration_service.model.Student;
 import jakarta.ws.rs.NotFoundException;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
@@ -17,6 +18,7 @@ import org.thymeleaf.context.Context;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Base64;
 import java.util.HashMap;
@@ -60,18 +62,13 @@ public class PdfService {
         Student student = studentRestClient.getStudentByMatricule(registration.getMatricule());
         if(student == null)
             throw new NotFoundException("Aucun n'etudiant à ce matricule");
-
-        // Contenu du QR code (tu peux mettre matricule, nom, prenom, etc.)
-//        String qrData = "Matricule: " + student.getMatricule() +
-//                "\nNom: " + student.getLastName() +
-//                "\nPrenom: " + student.getFirstName() +
-//                "\nInscription N°: " + registration.getRegistrationNumber() +
-//                "\nSpecialité: " + registration.getSpecialityLabel() +
-//                "\nAnnée academique: " + registration.getAcademicYearLabel() ;
-//        String qrData = "http://localhost:8888/api/registrations/"+registration.getId()+"/original-pdf";
-        String qrData = "http://${APP_HOST}:${APP_PORT}/api/registrations/"+registration.getId()+"/original-pdf";
+//        String qrData = "Matricule: " + student.getMatricule();
+        String qrData = "http://localhost:8888/api/registrations/"+registration.getId()+"/original-pdf";
+//        String qrData = "http://${APP_HOST}:${APP_PORT}/api/registrations/"+registration.getId()+"/original-pdf";
 
         String qrBase64 = generateQRCodeBase64(qrData, 150, 150);
+
+        String logoBase64 = getLogoBase64();
 
         Context context = new Context();
         context.setVariable("registration", registration);
@@ -79,6 +76,8 @@ public class PdfService {
         context.setVariable("today", LocalDate.now());
         context.setVariable("qrCodeBase64", qrBase64);
 
+        // Injection of the image
+        context.setVariable("logoPath", logoBase64);
 
         String htmlContent = templateEngine.process("registration-pdf", context);
 
@@ -97,11 +96,15 @@ public class PdfService {
     public byte[] generateRegistrationPdfWithoutQr(Registration registration) {
         Student student = studentRestClient.getStudentByMatricule(registration.getMatricule());
         if (student == null) throw new NotFoundException("Aucun étudiant avec ce matricule");
+        String logoBase64 = getLogoBase64();
 
         Context context = new Context();
         context.setVariable("registration", registration);
         context.setVariable("student", student);
         context.setVariable("today", LocalDate.now());
+
+        // Injection of the image
+        context.setVariable("logoPath", logoBase64);
 
         String htmlContent = templateEngine.process("registration-pdf-original", context);
         try (ByteArrayOutputStream out = new ByteArrayOutputStream()) {
@@ -115,4 +118,18 @@ public class PdfService {
             throw new RuntimeException("Erreur lors de la génération du PDF", e);
         }
     }
+
+    private String getLogoBase64() {
+        try {
+            ClassPathResource resource = new ClassPathResource("static/logo_ensitech_remove_bg.png");
+            byte[] imageBytes = resource.getInputStream().readAllBytes();
+            String base64Image = Base64.getEncoder().encodeToString(imageBytes);
+            // Le préfixe "data:image/png;base64," est crucial pour le Data URI
+            return "data:image/png;base64," + base64Image;
+        } catch (IOException e) {
+            System.err.println("Erreur lors de la conversion du logo en Base64: " + e.getMessage());
+            return "";
+        }
+    }
+
 }
