@@ -5,6 +5,7 @@ import com.project.ensitech.training_service.exception.ResourceNotFoundException
 import com.project.ensitech.training_service.model.dto.courseDto.CourseDto;
 import com.project.ensitech.training_service.model.dto.specialityDto.CreateSpecialityDto;
 import com.project.ensitech.training_service.model.dto.specialityDto.SpecialityDto;
+import com.project.ensitech.training_service.model.dto.specialityDto.SpecialityStatsDto;
 import com.project.ensitech.training_service.model.entity.Course;
 import com.project.ensitech.training_service.model.entity.Speciality;
 import com.project.ensitech.training_service.repository.CourseRepository;
@@ -18,9 +19,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -148,4 +147,35 @@ public class SpecialityServiceImpl implements ISpecialityService {
                 courseIds
         );
     }*/
+
+
+    public SpecialityStatsDto getStudentCountsAboveAverage() {
+        List<Speciality> specialities = specialityRepository.findAll();
+
+        List<String> labels = new ArrayList<>();
+        List<Long> counts = new ArrayList<>();
+
+       for (Speciality spec : specialities) {
+            labels.add(spec.getLabel());
+
+            // Map studentId -> list of grades for courses of this speciality
+            Map<Long, List<Double>> studentGrades = new HashMap<>();
+
+            spec.getCourses().forEach(course -> {
+                course.getEvaluations().forEach(eval -> {
+                    studentGrades.computeIfAbsent(eval.getStudentId(), k -> new ArrayList<>())
+                            .add(eval.getGrade());
+                });
+            });
+
+            // Count students with average > 10
+            long count = studentGrades.values().stream()
+                    .filter(grades -> grades.stream().mapToDouble(Double::doubleValue).average().orElse(0.0) > 10)
+                    .count();
+
+            counts.add(count);
+        }
+
+        return new SpecialityStatsDto(labels, counts);
+    }
 }

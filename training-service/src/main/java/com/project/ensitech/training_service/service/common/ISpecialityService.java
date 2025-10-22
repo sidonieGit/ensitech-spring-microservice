@@ -2,6 +2,7 @@ package com.project.ensitech.training_service.service.common;
 
 import com.project.ensitech.training_service.model.dto.specialityDto.SpecialityDto;
 import com.project.ensitech.training_service.model.dto.specialityDto.CreateSpecialityDto;
+import com.project.ensitech.training_service.model.dto.specialityDto.SpecialityStatsDto;
 
 import java.util.List;
 
@@ -13,4 +14,5 @@ public interface ISpecialityService {
     List<SpecialityDto> searchByLabel(String label);
     List<SpecialityDto> getAllSpecialities();
     SpecialityDto getSpecialityByLabel(String label);
+    SpecialityStatsDto getStudentCountsAboveAverage();
 }

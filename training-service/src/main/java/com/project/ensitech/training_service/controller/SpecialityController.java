@@ -2,11 +2,13 @@ package com.project.ensitech.training_service.controller;
 
 import com.project.ensitech.training_service.model.dto.specialityDto.SpecialityDto;
 import com.project.ensitech.training_service.model.dto.specialityDto.CreateSpecialityDto;
+import com.project.ensitech.training_service.model.dto.specialityDto.SpecialityStatsDto;
 import com.project.ensitech.training_service.service.common.ISpecialityService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -56,4 +58,9 @@ public class SpecialityController {
     public ResponseEntity<SpecialityDto> getSpecialityByLabel(@Valid @PathVariable String label){
         return ResponseEntity.ok(this.iSpecialityService.getSpecialityByLabel(label));
     };
+    @PreAuthorize("hasRole('DIRECTEUR')")
+    @GetMapping("/stats/students-above-average")
+    public SpecialityStatsDto getStudentsAboveAverage() {
+        return this.iSpecialityService.getStudentCountsAboveAverage();
+    }
 }
