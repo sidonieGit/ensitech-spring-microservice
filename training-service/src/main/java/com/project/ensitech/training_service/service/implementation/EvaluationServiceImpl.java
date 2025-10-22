@@ -182,5 +182,11 @@ public class EvaluationServiceImpl implements IEvaluationService {
             }
         }
     }
+
+
+    @Override
+    public  String getCountSucceedSpeciality (){
+        return "here";
+    }
 }
 

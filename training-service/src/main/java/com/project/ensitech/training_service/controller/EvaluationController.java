@@ -7,6 +7,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -55,6 +56,11 @@ public class EvaluationController {
     public ResponseEntity<Void> delete(@Valid @PathVariable Long id) {
         iEvaluationService.deleteEvaluation(id);
         return ResponseEntity.noContent().build();
+    }
+    @PreAuthorize("hasRole('DIRECTEUR')")
+    @GetMapping("/succeed-count-speciality")
+    public ResponseEntity<String> get() {
+        return ResponseEntity.ok(iEvaluationService.getCountSucceedSpeciality());
     }
 
 }

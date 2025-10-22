@@ -13,4 +13,5 @@ public interface IEvaluationService {
     List<EvaluationDto> getAllEvaluations();
     List<EvaluationDto> getAllEvaluationsByStudentId(Long studentId);
     List<EvaluationDto> getAllEvaluationsByCourseId(Long courseId);
+    String getCountSucceedSpeciality ();
 }

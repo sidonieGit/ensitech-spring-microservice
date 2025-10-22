@@ -39,7 +39,7 @@ public class DataLoader implements CommandLineRunner {
             User user = new User();
             user.setEmail("resp-etude@ensitech.com");
             // user.setPassword(encoder.encode("1234567"));
-            user.setPassword(encoder.encode("En$!tech@#"));
+            user.setPassword(encoder.encode("En$!tech@#0"));
             user.setRole(Role.RESPONSABLE_ETUDE);
             userRepository.save(user);
             System.out.println("RESPONSABLE_ETUDES créé avec succès");

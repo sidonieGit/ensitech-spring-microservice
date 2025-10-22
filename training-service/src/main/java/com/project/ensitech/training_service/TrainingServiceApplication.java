@@ -22,7 +22,7 @@ public class TrainingServiceApplication {
 	} */
 
 	public static void main(String[] args) {
-		String dbUrl, dbUsername, dbPassword;
+		String dbUrl, dbUsername, dbPassword, jwtSecretKey;
 
 		try {
 			// Tentative de lecture via .env (utile en local)
@@ -32,6 +32,7 @@ public class TrainingServiceApplication {
 			dbUrl = Objects.requireNonNull(dotenv.get("DB_URL_TRAINING"));
 			dbUsername = Objects.requireNonNull(dotenv.get("DB_USERNAME"));
 			dbPassword = Objects.requireNonNull(dotenv.get("DB_PASSWORD"));
+			jwtSecretKey =  Objects.requireNonNull(dotenv.get("JWT_SECRET_KEY"));
 
 			System.out.println("Chargement des variables depuis .env ou System.getenv() terminé");
 
@@ -41,6 +42,7 @@ public class TrainingServiceApplication {
 			dbUrl = System.getenv("DB_URL_TRAINING");
 			dbUsername = System.getenv("DB_USERNAME");
 			dbPassword = System.getenv("DB_PASSWORD");
+			jwtSecretKey = System.getenv("JWT_SECRET_KEY");
 
 		}
 
@@ -53,8 +55,9 @@ public class TrainingServiceApplication {
 		System.setProperty("DB_URL", dbUrl);
 		System.setProperty("DB_USERNAME", dbUsername);
 		System.setProperty("DB_PASSWORD", dbPassword);
+		System.setProperty("JWT_SECRET_KEY", jwtSecretKey);
 
-
+		// System.out.println("JWT_SECRET_KEY "+ jwtSecretKey);
 		SpringApplication.run(TrainingServiceApplication.class, args);
 	}
 
