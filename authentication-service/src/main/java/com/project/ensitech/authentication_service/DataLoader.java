@@ -29,7 +29,7 @@ public class DataLoader implements CommandLineRunner {
        if (userRepository.findByEmail("directeur@ensitech.com").isEmpty()) {
             User user = new User();
             user.setEmail("directeur@ensitech.com");
-            user.setPassword(encoder.encode("1234567"));
+            user.setPassword(encoder.encode("En$!tech@#"));
             user.setRole(Role.DIRECTEUR);
             userRepository.save(user);
             System.out.println("DIRECTEUR créé avec succès");
@@ -38,7 +38,8 @@ public class DataLoader implements CommandLineRunner {
         if (userRepository.findByEmail("resp-etude@ensitech.com").isEmpty()) {
             User user = new User();
             user.setEmail("resp-etude@ensitech.com");
-            user.setPassword(encoder.encode("1234567"));
+            // user.setPassword(encoder.encode("1234567"));
+            user.setPassword(encoder.encode("En$!tech@#"));
             user.setRole(Role.RESPONSABLE_ETUDE);
             userRepository.save(user);
             System.out.println("RESPONSABLE_ETUDES créé avec succès");
